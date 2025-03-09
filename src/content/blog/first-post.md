@@ -10,7 +10,12 @@ I moved back to New York City right after turning 27. I was driven for a multitu
 
 I left for Boston in 2018 because I felt staying in the same place would not allow me to evolve. I needed that break from the nest - to not be held back by expectations. When friends, family, communities - cities even - know you for a while, it's hard to change. Subconciously or not, its a gravitational well preventing growth, preventing oneself from toying with who one aspires to be.
 
-After 5 years of living in boston, I built up a great community of friends up and down I-93. But it was time to come back home, to the place that I feel most aligns with my values and habits. So I chose to come back to brooklyn
+After 5 years of living in boston, I built up a great community of friends up and down I-93. But it was time to come back home, to the place that I feel most aligns with my values and habits. So I chose to come back to brooklyn.
+
+
+I stayed at my parents place in fort greene on my childhood bedframe, and while working from home at my software engineering job, contacted realtors, landlords and began my journey back to the city I knew as a teenager.
+
+From start to finish, my apartment searching journey took 2 months, but I learned so much in the process. I tend to b
 
 
 
@@ -68,7 +73,7 @@ An example of this would be: I dont care about lighting, so i will pick the plac
  	- Not much standard deviation once you get to that bucket of features
  	- Yet if you actually took a magnifying glass to each unit in those buckets, you would find massive differences at very similar prices. Especially if there are multiple people with different wants. 
  	- The more generic the feature the more it correlates.
- 	- The less generic less quanitfiable the feature the less it correlates.
+ 	- The less generic less quantifiable the feature the less it correlates.
  	- Consider a "noise pollution index": thats a very specific feature that is hard to measure, is not going to be included on a filter on zillow
  		- If you increased the price of a unit by 300 dollars a month because it had 0 noise pollution, that could be worth $300 to someone who works from home, but you would be excluding said unit from the market of units at $3000. And people looking at the advertisment are going to wonder why that apartment is overpriced.
 	- Take that into account! Apartments arent commodities, the market is semi-efficient, there are opportunities.
