@@ -8,5 +8,5 @@ export default defineConfig({
 	site: 'https://luciencd.github.io/personal-website/',
 	base: '/personal-website',
 	integrations: [mdx(), sitemap()],
-    outDir: './docs'
+    outDir: './dist'
 });
