@@ -41,10 +41,11 @@ jobs:
         run: npm install -g astro
       - name: Astro build
         run: npm run build
-      - name: List repository contents
-        run: ls -R -al ./docs
+      #default goes to ./dict, so move it to ./docs where it will be read by github
       - name: List repository contents
         run: mv ./dist ./docs
+      - name: List repository contents
+        run: ls -R -al ./docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
