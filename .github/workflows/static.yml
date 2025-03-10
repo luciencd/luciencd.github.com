@@ -38,7 +38,7 @@ jobs:
         with:
           node-version: '22.9'
       - name: Install Astro CLI globally
-        run: npm install -g astro
+        run: npm install astro --save-dev
       - name: Astro build
         run: npm run build
       #default goes to ./dict, so move it to ./docs where it will be read by github
