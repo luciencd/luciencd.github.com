@@ -88,12 +88,17 @@ The key takeaways from this project were how to summarize an algorithmic improve
 Wayfair  (3rd year):
 Scalabilty Team
 
-The scalability team was born due to a necessity to speed up product retrieval speed on the wayfair website, and cut down on arbitrary uniquness of queries by teams on the front end, by merging all requests from the front end to a single graphql endpoint. The status quo was ad hoc product queries direct to db or through middlemen services and a major SOLR service, which was having difficulties scaling.
+The scalability team was born due to a necessity to speed up product retrieval speed on the wayfair website, and cut down on arbitrary uniquness of queries by teams on the front end, by merging all requests from the front end to a single graphql endpoint. 
+
+The status quo was ad hoc product queries direct to db or through middlemen services and a major SOLR service, which was having difficulties scaling.
 
 The team built up a service comprised of fetchers that pulled from redis and aerospike, and workers that would replenish/destale that data from mssql. It would also find background processes in the catalog organization and re-write them in a scalable way on the dotnetcore platform.
 
+One of the projects I undertook was to enable service mesh to the product-cache-api, to give us high level features like authentication, authorization, metrics and canary deploys. The other half of the project was in communicating with our 60+ clients and ensuring they were adopting authentication in their requests, and using data analytics and blackout tests to confirm that. 
 
-One of the projects I undertook was to enable service mesh to the product-cache-api, to give us high level features 
+The classic authentication problem was in full display with our use case: we wanted to implement full authentication, without potentially shutting out people who hadn't set up authentication. But how do you know who to contact if they haven't yet authenticated?
+
+An innovation I made was in rewriting a custom piece of canary deploy code to only deploy authentication to a subset of incoming requests, to ensure that we could find out the above information over a 24 hour period and slowly roll it out to full, with a trigger that would automatically revert the canary deploy if a certain percentage of requests had 403s. 
 
 
 The takeaway was working alongside a team of 14 to achieve a great objective. Synthesizing all communications by all coworkers and also disseminating my work to all of them, and the company now that any change had a direct impact to over a thousand engineers on the storefront. It was learning to broadcast changes ahead of time to a large audience of people many of whom were not listening, but would be affected by changes.
@@ -101,7 +106,15 @@ The takeaway was working alongside a team of 14 to achieve a great objective. Sy
 It was the largest scalable system I'd ever worked on, which had over 500 kubernetes nodes, 6 regions, 1 billion daily requests, and 50+ internal services requesting data.
 
 Wayfair (4th year):
-Scalability Team & SKU generation Team
+Scalability Team & GCP Migration Tiger Team & SKU generation Team
+
+The last year at wayfair I worked on a few teams and there were a lot of reorganizations. There were to the major layoffs going on every six months. Not as much 
+
+
+In the fourth year i spent at wayfair, I 
+- Takeaway: Take charge of your destiny and move on to better opportunities. Don't let fear drive your decision making. Not making a choice is a choice.
+- Takeaway: 
+
 
 Capital One (1st year):
 
