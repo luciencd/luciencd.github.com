@@ -1,0 +1,143 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+
+<!doctype html>
+<html lang="en">
+<style>
+    .container{
+        margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40vh;
+    }
+    /* Form container styling */
+    #form {
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      border: 1px solid #eaeaea;
+      border-radius: 8px;
+
+    }
+    /* Input and textarea styling */
+    #form input[type="text"],
+    #form input[type="email"],
+    #form textarea {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+    #form input[type="text"]:focus,
+    #form input[type="email"]:focus,
+    #form textarea:focus {
+      border-color: #0070f3;
+      outline: none;
+    }
+    /* Button styling */
+    #form button {
+      padding: 0.75rem 1.5rem;
+      background-color: #0070f3;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #form button:hover {
+      background-color: #005bb5;
+    }
+    /* Result container styling */
+    #result {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #333;
+    }
+  </style>
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <Header />
+        <main>
+        <div class ="container">
+            <form method="POST" id="form">
+            <input type="hidden" name="access_key" value="3d61eefc-1a03-44dd-920d-6342379c768f">
+            
+            
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            
+            
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+            
+            
+            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+            
+            <button type="submit">Submit Form</button>
+            <div id="result"></div>
+
+        </form>
+        </div>
+        </main>
+        <Footer />
+    </body>
+</html>
+
+
+
+
+<script is:inline>
+const form = document.getElementById('form');
+const result = document.getElementById('result');
+
+form.addEventListener('submit', function(e) {
+    const formData = new FormData(form);
+    e.preventDefault();
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    result.innerHTML = "Please wait..."
+
+    fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: json
+        })
+        .then(async (response) => {
+            let json = await response.json();
+            if (response.status == 200) {
+                result.innerHTML = json.message;
+            } else {
+                console.log(response);
+                result.innerHTML = json.message;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            result.innerHTML = "Something went wrong!";
+        })
+        .then(function() {
+            form.reset();
+            setTimeout(() => {
+                result.style.display = "none";
+            }, 3000);
+        });
+});
+</script>
