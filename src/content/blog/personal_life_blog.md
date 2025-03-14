@@ -14,7 +14,7 @@ heroImage: '/IMG_3383.jpg'
 - Youtube Content Creation, Rubik's Cubes.
 
 ##### 2010 : 2014 (New York City, 9th to 12th grade)
-- Astronomy, Astrophotography, Physics, Research at the Museum of natural history.
+- Astronomy, Astrophotography, Physics, Research at the <a href="https://ui.adsabs.harvard.edu/abs/2015AAS...22521506P/abstract">American Museum of Natural History</a>.
 - Learning to Code, Hardware(Raspberry Pi, Arduino, Adafruit).
 
 ##### 2014 : 2018 (Rensselaer Polytechnic Institute, B.S. in Computer Science)
