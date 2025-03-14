@@ -6,6 +6,8 @@ heroImage: '/all_countries_visited.png'
 ---
 
 
+Article coming soon!
+
 Italy
 
 France
