@@ -53,6 +53,7 @@ What I did, what I learned, how I grew. Not all work, projects and responsibilit
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The code was mostly PHP, JS(mix of frameworks), and C# dotnet services. I learned a lot about delivering code in a timely way, observability, and how big companies organize data pipelines.
 
+Techs: (PHP, SQL, C#, datadog, javascript)
 
 #### Wayfair (2nd year):
 ##### Legal Team & Scalabilty Team 
@@ -65,6 +66,7 @@ What I did, what I learned, how I grew. Not all work, projects and responsibilit
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key takeaways from this project were how to summarize an algorithmic improvement to a non-technical PM. How to get buy in for multiple months of work with only one year of experience and so many team priorities. Finally, I learned to take a win: even if continuing to improve the project was fun for me, 90% of the benefits had already been achieved, and that extra 10% was now relatively less important. I want to thank PM Kieu Ngo for having faith in my ability to deliver and allocating the story point budget for it.
 
+Techs: (PHP, SQL, C#)
 
 #### Wayfair (3 - 4th year):
 ##### Scalabilty Team
@@ -82,6 +84,7 @@ What I did, what I learned, how I grew. Not all work, projects and responsibilit
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My solution was to rewrite a custom piece of canary deploy code (based in kubernetes) to roll out authentication to a subset of incoming requests. This would ensure that we could graph adoption over a 24 hour period and slowly roll it out to full, with a trigger that would automatically revert the canary deploy if a certain percentage of requests had 403s, avoiding human involved pagerduties and sevs.
 
+Techs: (SQL, C#, grafana, kubernetes)
 
 
 #### Wayfair (last 6 months):
@@ -94,6 +97,8 @@ What I did, what I learned, how I grew. Not all work, projects and responsibilit
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I then ended up in the product generation team, tasked with converting the existing sku-generation service to dotnetcore distributed service. It was nice working on that team but I realized I wanted to explore new opportunities elsewhere 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The biggest take away of the 4th year was that I needed to take charge of my destiny and move on to better opportunities. To anyone reading this, don't let fear or complacency drive your decision making. Not making a choice is a choice, and its ok to leave a job without another lined up. 
+
+Techs: (SQL, C#, kubernetes, GCP, PHP)
 
 #### First Sabbatical. Between Wayfair and Capital One.
 
@@ -120,6 +125,8 @@ What I did, what I learned, how I grew. Not all work, projects and responsibilit
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I also spent considerable time mentoring junior engineers, which was new compared to past roles. It was nice to be able to give guidance to people starting out their careers. I also was able to delegate work to said juniors and reviewed their PRs and design documents.
 
+Techs: (SQL, Python, Airflow, Terraform, AWS)
+
 #### Capital One (2nd year):
 ##### Privacy Data Team
 
@@ -131,10 +138,11 @@ What I did, what I learned, how I grew. Not all work, projects and responsibilit
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The experience at capital one was good becuase I learned tons, and the people there were very smart. However, a bank in the privacy space is very risk-averse, and not a greatlong term culture fit. In many ways, it forced me to think harder about my work and the mission of my team, and about how so much that goes into builing great software has nothing to do with code.
 
+Techs: (SQL, Python, Airflow, Terraform, AWS)
 
 #### Second Sabbatical
 
-I spent a lot of time travelling during this sabbatical. I went to 
+I spent a lot of time travelling during this sabbatical. I went to:
 
 France -> Italy -> France -> Hungary -> Slovakia -> Ukraine -> Poland -> France -> Japan -> Taiwan -> China -> Vietnam -> Australia -> back home.
 
@@ -143,6 +151,6 @@ I learned a lot about myself.
 
 #### What Company am I looking to work for?
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I'd like to work at a smaller company this time, one which values getting things done rather than checking off boxes in a high up leader's spreadsheet at the end of the month.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I'd like to work at a company that values getting things done rather than checking off boxes in a high up leader's spreadsheet at the end of the month.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I'd like to work on a company who's product is more concrete, in the industrial, robotics, or medical space. The only industries I don't want to return to are the banking, finance, or regulatory spaces.
