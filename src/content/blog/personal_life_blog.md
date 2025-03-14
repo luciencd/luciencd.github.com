@@ -150,4 +150,4 @@ I learned a lot about myself.
 
 I'd like to work at a smaller company this time, one which values getting things done rather than checking off boxes in a high up leader's spreadsheet at the end of the month.
 
-I'd like to work on a company who's product is more concrete, in the industrial, robotics, medical space. Although nothing is disqualifying, except the banking, finance, or regulatory space.
+I'd like to work on a company who's product is more concrete, in the industrial, robotics, or medical space. The only industries I don't want to return to are the banking, finance, or regulatory spaces.
