@@ -82,7 +82,7 @@ Techs: (PHP, SQL, C#)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The classic authentication problem was in full display with our use case: we wanted to implement full authentication, without potentially shutting out people who hadn't set up authentication. But how do you know who to contact if they haven't yet authenticated? Every company that gets big deals with a problem similar to this.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My solution was to rewrite a custom piece of canary deploy code (based in kubernetes) to roll out authentication to a subset of incoming requests. This would ensure that we could graph adoption over a 24 hour period and slowly roll it out to full, with a trigger that would automatically revert the canary deploy if a certain percentage of requests had 403s, avoiding human involved pagerduties and sevs.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My solution was to write a custom piece of k8s canary deploy code to roll out authentication to a subset of incoming requests. This would ensure that we could graph adoption over a 24 hour period and slowly roll it out to full, with a trigger that would automatically revert the canary deploy if a certain percentage of requests had 403s, avoiding human involved pagerduties and sevs.
 
 Techs: (SQL, C#, grafana, kubernetes)
 
