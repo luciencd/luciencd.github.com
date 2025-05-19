@@ -2,7 +2,7 @@
 title: 'A Timeline of my personal and professional life:'
 description: 'About me'
 pubDate: 'March 10 2025'
-heroImage: '/IMG_3383.jpg'
+heroImage: '/DSC_0635.jpg'
 ---
 
 

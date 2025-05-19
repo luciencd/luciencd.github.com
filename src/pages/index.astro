@@ -5,33 +5,93 @@ import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<p>
-				My default activity in the world is learning, observing and experimenting: skills, facts, language, people, software, organizations and so on. 
-				
-			</p>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-			<p>My current obsessions:</p>
-			<ul>
-				<li>Implemeting a privacy-first geo-time-fence location sharing app <a href = "https://nycfind.me">nycfind.me</a> </li>
-				<li>Interviewing for senior data engineering, full-stack and backend roles at <a href = "/contact_me">YOUR</a> company. <a href = "https://www.linkedin.com/in/lucien-christie-dervaux-690bb467/">linkedin</a>. <a href = "/lucienmostmostrecentresume.pdf" download="lucienresume.pdf"> resume</a>.</li>
-				<li>Creating a nano-bnb for travelers I met abroad so they can experience America affordably.</li>
+      .layout {
+		  display: grid;
+		  grid-template-columns: 14% 36% 36% 14%;
+		  align-items: stretch; /* let items take full height */
+		  gap: 1rem;
+		  margin: 0 auto;
+		  max-width: 1200px;
+		  width: 100%;
+		  min-height: 80vh; /* or 100vh depending on visual preference */
+		  padding: 20px;
+		}
 
-				<li>Book club.</li>
-				<li>Getting drinks with friends at <a href = "https://syndicatedbk.com/">syndicated bar</a>, coffees at <a href = "https://www.nookbk.com/">nook</a>
-				<li>Rock Climbing at <a href = "https://www.gp-81.com/">gp-81</a></li>
-				
-				<li>Re-doing <i>MATH 4020: linear algebra</i> and understanding it this time.</li>
-				<li>Software contract work for dynamic brick and mortar small businesses near where I live.</li>
-			</ul>
-		</main>
-		<Footer />
-	</body>
+      .writing {
+		  display: flex;
+		  flex-direction: column;
+		  justify-content: center; /* vertically center content */
+		  padding-right: 1rem;
+		  height: 100%; /* ensure it fills the grid row height */
+		}
+
+      .image-section {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .image-section img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+
+      main {
+        margin: 0;
+        padding: 0;
+      }
+
+      ul {
+        padding-left: 1.2em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="layout">
+      <div></div>
+
+      <div class="writing">
+
+        <p>My current obsessions:</p>
+        <ul>
+          <li>Implementing a privacy-first geo-time-fence location sharing app <a href="https://nycfind.me">nycfind.me</a></li>
+          <li>Interviewing for senior data engineering, full-stack and backend roles at <a href="/contact_me">YOUR</a> company. <a href="https://www.linkedin.com/in/lucien-christie-dervaux-690bb467/">linkedin</a>. <a href="/lucienmostmostrecentresume.pdf" download="lucienresume.pdf">resume</a>.</li>
+          <li>Creating a nano-bnb for travelers I met abroad so they can experience America affordably.</li>
+          <li>Book club.</li>
+          <li>Getting drinks with friends at <a href="https://syndicatedbk.com/">syndicated bar</a>, coffees at <a href="https://www.nookbk.com/">nook</a></li>
+          <li>Rock Climbing at <a href="https://www.gp-81.com/">gp-81</a></li>
+          <li>Re-doing <i>MATH 4020: linear algebra</i> and understanding it this time.</li>
+          <li>Software contract work for dynamic brick and mortar small businesses near where I live.</li>
+        </ul>
+      </div>
+
+      <div class="image-section">
+        <img src="/public/DSC_0655.jpg" alt="Portrait of Lucien" />
+      </div>
+
+      <div></div>
+    </main>
+
+    <Footer />
+  </body>
 </html>
