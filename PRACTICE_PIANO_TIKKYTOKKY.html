@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Practice Lab — Piano</title>
+<style>
+:root{--bg:#f6f5f1;--paper:#fff;--ink:#202a29;--muted:#717c79;--line:#e0e5e0;--accent:#176e60;--accentLight:#e8f5ed;--yellow:#e9b766;--shadow:0 12px 38px rgba(28,44,37,.05)}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #83beb0;outline-offset:3px}.wrap{max-width:1250px;margin:auto;padding:27px 30px 60px}.mast{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:25px}.brand{display:flex;gap:13px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;background:var(--ink);display:grid;place-items:center;color:white;font-size:23px}.brand strong{display:block;font-family:'Trebuchet MS',system-ui,sans-serif;font-size:21px;letter-spacing:-.8px}.brand small{display:block;color:var(--muted);font-size:12px}.timer{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--line);padding:9px 13px;border-radius:13px}.time{font:700 21px 'Trebuchet MS',system-ui,sans-serif;font-variant-numeric:tabular-nums;min-width:68px}.timer small{font-size:11px;color:var(--muted)}.btn{border:1px solid var(--line);background:white;border-radius:10px;padding:10px 14px;font-weight:700;color:var(--ink)}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn:hover{filter:brightness(.96)}.btn:disabled{opacity:.35;cursor:not-allowed}.hero{background:#233a35;color:#fff;border-radius:22px;padding:27px 32px 23px;position:relative;overflow:hidden}.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:2px;color:#b5d7c7;font-weight:700}.hero h1{font:600 clamp(27px,3vw,40px) 'Trebuchet MS',system-ui,sans-serif;margin:8px 0;letter-spacing:-1.5px}.hero p{margin:0;color:#b7c9c2;max-width:610px;font-size:14px;line-height:1.6}.rings{position:absolute;right:-28px;top:-100px;width:330px;height:330px;border:1px solid #41645a;border-radius:50%;pointer-events:none}.rings:before,.rings:after{content:'';position:absolute;border:1px solid #41645a;border-radius:50%;inset:35px}.rings:after{inset:72px}.schedule{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:21px}.schedule button{position:relative;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 19px;color:var(--ink)}.schedule button.active{border:2px solid var(--accent);background:var(--accentLight);padding:16px 18px}.schedule .num{font-size:11px;color:var(--accent);font-weight:700}.schedule h3{font:700 19px 'Trebuchet MS',system-ui,sans-serif;margin:8px 0 6px}.schedule small{color:var(--muted)}.schedule .mins{float:right;font-size:12px;font-weight:700}.schedule .bar{height:4px;background:#e0e6e1;border-radius:5px;margin-top:16px}.schedule .bar>span{display:block;height:100%;background:var(--accent);border-radius:5px}.main{display:grid;grid-template-columns:minmax(0,1fr) 302px;gap:20px;margin-top:21px}.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.score-panel{padding:24px;min-width:0}.section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.section-header h2{font:700 27px 'Trebuchet MS',system-ui,sans-serif;letter-spacing:-.8px;margin:5px 0 5px}.section-header p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}.tag{font-size:11px;background:#edf0eb;border-radius:20px;padding:8px 10px;white-space:nowrap;color:#496058;font-weight:700}.navigator{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;padding:13px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.nav-center{text-align:center}.nav-center strong{font-size:15px}.nav-center small{font-size:12px;color:var(--muted);display:block;margin-top:3px}.arrow{height:40px;width:43px;font-size:20px;padding:0}.score-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:22px}.score-head h3{font:700 16px 'Trebuchet MS',system-ui,sans-serif;margin:0}.score-head span{font-size:12px;color:var(--muted)}.score{min-height:288px;padding:12px 0 6px;overflow-x:auto}.score svg{max-width:100%;height:auto!important}.score .abcjs-container{overflow:visible}.note{font-size:12px;color:var(--muted);margin:0 0 16px;line-height:1.55}.bottom-actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}.settings{padding:22px}.settings h3{font:700 17px 'Trebuchet MS',system-ui,sans-serif;margin:1px 0 5px}.settings .sub{color:var(--muted);font-size:12px;margin:0 0 22px}.setting{margin-bottom:20px}.setting-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.setting-line label{font-size:13px;font-weight:700}.setting-line output{font-size:12px;color:var(--accent);font-weight:700}.setting input[type=range]{width:100%;accent-color:var(--accent)}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{padding:8px 10px;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:12px;font-weight:700;color:#66716c}.chip.on{background:var(--accentLight);border-color:#8ebfac;color:#135e52}.hr{height:1px;background:var(--line);margin:22px 0}.setting-hint{color:var(--muted);font-size:11px;line-height:1.45;margin:7px 0 0}.session-controls{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap}.footer{text-align:center;margin-top:25px;color:#89948e;font-size:12px}.fallback{font-size:13px;color:var(--muted);padding:35px;text-align:center}.hidden{display:none!important}@media(max-width:850px){.main{grid-template-columns:1fr}.schedule{gap:7px}.schedule button{padding:12px!important}.schedule h3{font-size:16px}.rings{display:none}}@media(max-width:530px){.wrap{padding:15px}.mast{align-items:flex-start}.brand small{display:none}.timer{gap:5px;padding:7px}.time{font-size:17px;min-width:auto}.timer small{display:none}.hero{padding:23px}.score-panel{padding:15px}.schedule .mins{display:none}.schedule small{font-size:11px}.tag{display:none}.score{min-height:220px}}
+
+.rhythm-sheet-wrap{padding:18px 0 0;max-width:100%}.rhythm-sheet{display:block;width:100%;height:auto;overflow:visible}
+/* Scales use a physical keyboard instead of notation. */
+.scale-keyboard-area{padding:12px 0 4px}
+.keyboard-legend{display:flex;align-items:center;gap:17px;flex-wrap:wrap;margin:2px 0 23px;color:#5d6964;font-size:12px;font-weight:700}
+.keyboard-legend>span{display:inline-flex;align-items:center;gap:7px}
+.legend-dot{display:inline-block;width:12px;height:12px;border-radius:4px;border:1px solid rgba(0,0,0,.08)}
+.legend-dot.root{background:#e6ad50}.legend-dot.left{background:#86b6db}.legend-dot.right{background:#75beab}.legend-dot.overlapping{background:#80a5c1}
+.keyboard-scroller{overflow-x:auto;padding:0 2px 20px;scrollbar-color:#bfcac5 transparent;scrollbar-width:thin}
+.piano-keyboard{position:relative;isolation:isolate;margin:auto auto 0;box-shadow:0 15px 25px rgba(13,24,30,.08);border-radius:0 0 9px 9px}
+.piano-white,.piano-black{position:absolute;top:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;transition:background .12s;user-select:none}
+.piano-white{background:linear-gradient(#fff 68%,#f1f2ee);border:1px solid #b9c2c0;border-right-width:0;border-radius:0 0 5px 5px;z-index:1;color:#78827d;padding:14px 1px 13px}
+.piano-white:last-of-type{border-right-width:1px}
+.piano-black{z-index:3;background:linear-gradient(110deg,#1c282c,#303e3f 60%,#151d21);box-shadow:2px 4px 7px rgba(0,0,0,.27);border:1px solid #182023;border-radius:0 0 5px 5px;color:#cbd6d1;padding:10px 0 11px}
+.piano-white.lit.lh{background:linear-gradient(#d5e8f7,#8fbfe4)}
+.piano-white.lit.rh{background:linear-gradient(#dbf1e7,#7fcbb6)}
+.piano-white.lit.both{background:linear-gradient(#d8ebf6,#8eaeca)}
+.piano-black.lit.lh{background:linear-gradient(#5b91be,#326d9f)}
+.piano-black.lit.rh{background:linear-gradient(#4baf92,#197d65)}
+.piano-black.lit.both{background:linear-gradient(#5a9cae,#396e91)}
+.piano-white.lit.tonic{background:linear-gradient(#ffe6b5,#eab55b);color:#5c451b}
+.piano-black.lit.tonic{background:linear-gradient(#e6b564,#a16c27);color:#fff6da}
+/* Numbers sit directly on the key tops. The color of the badge identifies the hand. */
+.key-fingers{display:flex;align-items:center;justify-content:center;gap:3px;min-height:23px}
+/* White-key numbers go BELOW the black keys, so none are obscured. */
+.piano-white .key-fingers{position:absolute;bottom:41px;left:50%;transform:translateX(-50%)}
+.piano-white .key-fingers.dual .finger-badge{width:18px;height:23px;font-size:12px;border-radius:6px}
+.piano-black .key-fingers{flex-direction:column;gap:3px}
+.piano-white .key-label{position:absolute;bottom:12px;left:50%;transform:translateX(-50%)}
+.finger-badge{font:800 14px/1 'Trebuchet MS',system-ui,sans-serif;display:grid;place-items:center;
+ width:24px;height:24px;border-radius:8px;border:1px solid rgba(255,255,255,.65);
+ color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.15);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.finger-badge.lh{background:#2c6d9f}.finger-badge.rh{background:#187e68}
+.piano-black .finger-badge{font-size:12px;width:21px;height:22px;border-radius:6px}
+.piano-keyboard .piano-black.lit .key-label{color:#fff}
+.piano-keyboard .piano-white.lit .key-label{color:#344442}
+.key-role{display:none}
+.key-label{font:700 10px 'Trebuchet MS',system-ui,sans-serif;white-space:nowrap}
+.piano-black .key-label{font-size:9px}
+.scale-sequence-heading{display:flex;justify-content:space-between;gap:10px;font:700 13px 'Trebuchet MS',system-ui,sans-serif;margin:23px 0 12px}
+.scale-sequence-heading span{font:500 12px system-ui,sans-serif;color:var(--muted)}
+.scale-pitches{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.pitch-pill{border:1px solid #cee4d9;background:#f1f8f4;color:#1d6657;border-radius:7px;font-size:12px;padding:7px 9px;font-weight:700}
+.pitch-divider{font-size:11px;color:#9eaca4}.keyboard-hint{font-size:11px;color:var(--muted);margin:16px 0 0}
+@media(max-width:530px){.keyboard-legend{gap:10px;margin-bottom:16px;font-size:11px}.scale-sequence-heading{margin-top:15px}.keyboard-scroller{margin-right:-4px}}
+/* Chord study score, with independently concealed answers. */
+.chord-key-bar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:17px;background:#ecf5f0;border:1px solid #d5e7dc;padding:12px 15px;border-radius:11px;font-size:13px;color:#355a4d}
+.chord-key-bar strong{font:700 17px 'Trebuchet MS',system-ui,sans-serif;color:#1a5f4d}
+.chord-score-wrap{padding:4px 0 18px}
+.chord-score{display:block;width:100%;height:auto}
+.chord-score text{user-select:none}
+.answer-hint{font-size:11px;color:#78867d;margin-top:2px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f8faf7;border:1px solid #e5eee8;border-radius:10px;margin-bottom:8px;padding:11px 12px}
+.toggle-row label{font-size:13px;font-weight:700}.toggle-switch{background:#d6ddd8;width:40px;height:23px;border-radius:99px;position:relative;border:0;transition:background .15s;flex-shrink:0}
+.toggle-switch:after{content:'';display:block;width:17px;height:17px;position:absolute;left:3px;top:3px;background:#fff;border-radius:50%;box-shadow:0 1px 2px #0002;transition:transform .15s}
+.toggle-switch.on{background:var(--accent)}.toggle-switch.on:after{transform:translateX(17px)}
+
+/* The metronome is a persistent sidebar instrument, independent of the session timer. */
+.met-card{background:#f1f7f3;border:1px solid #d6e9dd;border-radius:15px;padding:16px 14px 14px;margin:4px 0 0}
+.met-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:13px}
+.met-heading h3{margin:0;font-size:17px}
+.met-status{display:inline-flex;align-items:center;gap:6px;color:#60766d;font-size:11px;font-weight:700}
+.met-status:before{content:'';background:#b6c7bd;width:7px;height:7px;border-radius:100%}
+.met-card.is-playing .met-status{color:#177b65}
+.met-card.is-playing .met-status:before{background:#28a77c;box-shadow:0 0 0 4px #28a77c22}
+.met-tempo-line{display:flex;align-items:center;justify-content:center;gap:15px;margin:7px 0 14px}
+.met-tempo-number{min-width:94px;text-align:center}
+.met-tempo-number strong{display:block;font:700 43px/.95 'Trebuchet MS',system-ui,sans-serif;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.met-tempo-number span{display:block;font:700 10px system-ui,sans-serif;letter-spacing:1.8px;color:#627e72;margin-top:7px}
+.met-step{width:38px;height:38px;border:1px solid #c5dbcf;border-radius:12px;background:#fff;color:#23594b;font-size:23px;line-height:1;display:grid;place-items:center;padding:0}
+.met-step:active{background:#d8eee1}
+.met-card input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}
+.met-beat-row{display:flex;align-items:center;justify-content:center;gap:12px;min-height:28px;margin:17px 0 14px}
+.met-beat{height:15px;width:15px;border-radius:99px;background:#c7d7ce;border:1px solid #aabfb4;transition:background .045s,transform .045s,box-shadow .045s}
+.met-beat:first-child{width:17px;height:17px}
+.met-beat.active{background:#258d77;border-color:#258d77;transform:scale(1.22);box-shadow:0 0 0 4px #258d771d}
+.met-beat.active.downbeat{background:#e2a84e;border-color:#d8a04d;box-shadow:0 0 0 4px #dfad4b29}
+.met-signature{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 0 14px;border-top:1px solid #d7e6dc}
+.met-signature>span{font-size:12px;font-weight:700;color:#51645b}
+.met-meter-pills{display:flex;gap:5px}
+.met-meter-pills button{background:white;border:1px solid #ccded1;color:#587267;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700}
+.met-meter-pills button.on{background:#e0efe7;border-color:#76b39e;color:#13654e}
+.met-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
+.met-actions .btn{padding:11px 9px;font-size:12px}
+.met-actions .btn.primary{background:#176e60}
+.met-options{display:flex;flex-direction:column;gap:11px;margin:16px 0 0;padding-top:14px;border-top:1px solid #d7e6dc}
+.met-check{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#455b50;cursor:pointer}
+.met-check input{width:15px;height:15px;margin:0;accent-color:var(--accent)}
+.met-caption{font-size:11px;line-height:1.5;margin:10px 0 0;color:#778c7c}
+@media(min-width:851px){.settings{align-self:start}}
+
+</style>
+</head>
+<body><div class="wrap">
+<header class="mast"><div class="brand"><div class="logo">♫</div><div><strong>Practice Lab</strong><small>A focused piano workout, one exercise at a time.</small></div></div><div class="timer"><div><small>SESSION REMAINING</small><div class="time" id="clock">60:00</div></div><button class="btn primary" id="startTimer">▶ Start</button><button class="btn" id="resetTimer" title="Reset timer">↺</button></div></header>
+<div class="hero"><div class="rings"></div><div class="eyebrow">Your daily training studio</div><h1>One hour. Three skills. Endless variation.</h1><p>Train your hands, internal clock, and harmonic fluency with a visual keyboard and fresh, playable notation.</p></div>
+<nav class="schedule" aria-label="Practice sections">
+<button data-section="0" class="active"><span class="num">01 / TECHNIQUE</span><span class="mins" id="time0">20 min</span><h3>Scales</h3><small>Highlighted keyboard notes</small><div class="bar"><span style="width:100%"></span></div></button>
+<button data-section="1"><span class="num">02 / TIMING</span><span class="mins" id="time1">20 min</span><h3>Rhythm</h3><small>2/4 · Read, count, play</small><div class="bar"><span style="width:100%"></span></div></button>
+<button data-section="2"><span class="num">03 / HARMONY</span><span class="mins" id="time2">20 min</span><h3>Chords</h3><small>Voicings and bass movement</small><div class="bar"><span style="width:100%"></span></div></button>
+</nav>
+<div class="main"><main class="panel score-panel"><div class="section-header"><div><div class="eyebrow" style="color:var(--accent)" id="sectionEyebrow">PART 01 · TECHNIQUE</div><h2 id="sectionTitle">Scale laboratory</h2><p id="sectionDescription">A shuffled selection of keys. Play each with your left hand, right hand, then together.</p></div><span class="tag" id="sectionTag">KEY STUDY</span></div>
+<div class="navigator"><button class="btn arrow" id="prev" title="Previous exercise" aria-label="Previous exercise">←</button><div class="nav-center"><strong id="exerciseName">C major</strong><small id="exerciseCount">Exercise 1 of 12</small></div><button class="btn arrow" id="next" title="Next exercise" aria-label="Next exercise">→</button></div>
+<div class="score-head"><h3 id="scoreTitle">Play the notation</h3><span id="scoreMeta">♩ = 80</span></div><div class="chord-key-bar hidden" id="chordKeyBar" aria-live="polite"></div><div class="score" id="notation"><div class="fallback">Loading music notation…</div></div><p class="note" id="instruction"></p>
+<div class="bottom-actions"><button class="btn" id="reRoll">↻ New random set</button><button class="btn primary" id="nextSection">Next section →</button></div>
+</main><aside class="panel settings"><h3>Exercise controls</h3><p class="sub">Tune the generator to your practice level.</p><div id="dynamicSettings"></div>
+<section class="met-card" id="metronomePanel" aria-label="Metronome">
+ <div class="met-heading"><h3>Metronome</h3><span class="met-status" id="metStatus" role="status">Ready</span></div>
+ <div class="met-tempo-line">
+  <button type="button" class="met-step" id="metMinus" aria-label="Decrease tempo by 1 BPM">−</button>
+  <div class="met-tempo-number"><strong id="metBpmValue">80</strong><span>BEATS / MIN</span></div>
+  <button type="button" class="met-step" id="metPlus" aria-label="Increase tempo by 1 BPM">+</button>
+ </div>
+ <label class="hidden" for="metBpmSlider">Metronome tempo in beats per minute</label>
+ <input type="range" id="metBpmSlider" min="40" max="220" step="1" value="80" aria-label="Metronome tempo in beats per minute"/>
+ <div class="met-beat-row" id="metBeatRow" aria-label="Beat indicators: 4 beats per bar">
+  <span class="met-beat downbeat"></span><span class="met-beat"></span><span class="met-beat"></span><span class="met-beat"></span>
+ </div>
+ <div class="met-signature"><span>Beats per bar</span><div class="met-meter-pills" role="group" aria-label="Metronome beats per bar">
+  <button type="button" id="metMeter2" data-meter="2" aria-pressed="false">2/4</button><button type="button" id="metMeter4" data-meter="4" aria-pressed="true" class="on">4/4</button>
+ </div></div>
+ <div class="met-actions"><button type="button" class="btn primary" id="metToggle" aria-pressed="false">▶ Start click</button><button type="button" class="btn" id="metTap">Tap tempo</button></div>
+ <div class="met-options">
+  <label class="met-check"><input id="metFollow" type="checkbox" checked/> Match exercise tempo &amp; meter</label>
+  <label class="met-check"><input id="metAccent" type="checkbox" checked/> Accent first beat</label>
+ </div>
+ <p class="met-caption" id="metHint">Starts on beat 1 · Plays audio through your device.</p>
+</section>
+<div class="hr"></div><h3>Session setup</h3><p class="sub">Allocate your 60 minutes across the three sections.</p><div class="setting"><div class="setting-line"><label for="split">Scale practice</label><output id="splitText">20 min</output></div><input id="split" type="range" min="5" max="45" step="5" value="20" /></div><div class="setting"><div class="setting-line"><label for="rhythmTime">Rhythm practice</label><output id="rhythmTimeText">20 min</output></div><input id="rhythmTime" type="range" min="5" max="45" step="5" value="20"/></div><div class="setting-hint" id="chordTimeText">Chords: 20 min · Total: 60 min</div><div class="session-controls"><button class="btn" id="newSession">↻ Fresh session</button></div></aside></div>
+<div class="footer">Practice Lab · Generated notation, not fixed drills · Keyboard: ← → for exercises, ↑ ↓ for sections</div>
+</div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), pick=a=>a[Math.floor(Math.random()*a.length)],shuffle=a=>[...a].sort(()=>Math.random()-.5),range=n=>Array.from({length:n},(_,i)=>i);
+const keyNames=['C','G','D','A','E','B','F#','C#','F','Bb','Eb','Ab'];
+const keyRootMidi={'C':60,'G':67,'D':62,'A':69,'E':64,'B':71,'F#':66,'C#':61,'F':65,'Bb':70,'Eb':63,'Ab':68};
+const sharpKeys=new Set(['G','D','A','E','B','F#','C#']);
+const sharpNotes=['C','^C','D','^D','E','F','^F','G','^G','A','^A','B'];
+const flatNotes=['C','_D','D','_E','E','F','_G','G','_A','A','_B','B'];
+const modes=['major','minor'];
+const config={scales:{keys:6,octaves:1,bpm:80,modes:['major'],hands:['LH','RH','Both']},rhythm:{bars:24,group:6,bpm:72,eighthDensity:45,rests:false},chords:{bars:16,bpm:76,qualities:['maj','min','min7','7','maj7'],patterns:['4','3+1','2+2'],bass:['root','third','fifth'],inversions:true,showKey:true,showChordNames:true}};
+const sections=[{eyebrow:'PART 01 · TECHNIQUE',title:'Scale laboratory',description:'A shuffled subset of keys. Play left hand, right hand, and hands together.',tag:'KEY STUDY'},{eyebrow:'PART 02 · TIMING',title:'Rhythm laboratory',description:'Two beats per measure in 2/4, with quarter, eighth and half notes. Six bars per page by default.',tag:'RHYTHM STUDY'},{eyebrow:'PART 03 · HARMONY',title:'Chord laboratory',description:'Eight-bar score pages, Roman-numeral degrees, chord symbols and changing bass notes.',tag:'HARMONY STUDY'}];
+let exercises=[[],[],[]],indexes=[0,0,0],section=0,remaining=3600,interval=null,timerRunning=false,alloc=[20,20,20];
+function abcnote(midi,flat=false){let s=(flat?flatNotes:sharpNotes)[((midi%12)+12)%12],oct=Math.floor(midi/12)-1,marks=oct>=5?"'".repeat(oct-5):','.repeat(Math.max(0,4-oct));return oct>=5?s.toLowerCase()+marks:s+marks}
+function keySig(k){return k==='C#'?'C#':k}
+function diatonicScale(k,mode,octaves){let root=keyRootMidi[k]+(mode==='minor'?-0:0),steps=mode==='major'?[0,2,4,5,7,9,11,12]:[0,2,3,5,7,8,10,12],asc=[];for(let o=0;o<octaves;o++)for(let j=0;j<7;j++)asc.push(root+12*o+steps[j]);asc.push(root+octaves*12);return [...asc,...asc.slice(0,-1).reverse()]}
+function genScales(){let c=config.scales;let chosen=shuffle(keyNames).slice(0,c.keys);let out=[];for(let key of chosen)for(let mode of c.modes){let notes=diatonicScale(key,mode,c.octaves);for(let hand of c.hands)out.push({key,mode,hand,notes})}return out}
+// In 2/4, four eighth-note units fill each bar, never eight.
+// Weighted, musically readable patterns mimic elementary rhythm-study books.
+const rhythmPatterns=[
+ {units:[2,2],base:1.6,growth:-.4},        // two quarters
+ {units:[4],base:.6,growth:-.38},           // half note
+ {units:[1,1,2],base:.16,growth:1.75},     // two eighths, quarter
+ {units:[2,1,1],base:.16,growth:1.75},     // quarter, two eighths
+ {units:[1,1,1,1],base:.03,growth:1.05},   // four eighths
+ {units:[1,2,1],base:.02,growth:.48}       // eighth, quarter, eighth
+];
+function makeRhythmBar(c){
+ const density=c.eighthDensity/100;
+ const weights=rhythmPatterns.map(p=>Math.max(0,p.base+p.growth*density)*(p.units.includes(1)?density:1-density));
+ let roll=Math.random()*weights.reduce((a,b)=>a+b,0),chosen=rhythmPatterns[0];
+ for(let i=0;i<rhythmPatterns.length;i++){roll-=weights[i];if(roll<=0){chosen=rhythmPatterns[i];break}}
+ let units=chosen.units.map(dur=>({dur,rest:c.rests&&Math.random()<.14}));
+ // Every bar must contain at least one played note.
+ if(units.every(u=>u.rest))pick(units).rest=false;
+ return units;
+}
+function genRhythm(){let c=config.rhythm;return range(Math.ceil(c.bars/c.group)).map(i=>({
+ bars:range(Math.min(c.group,c.bars-i*c.group)).map(()=>({meter:'2/4',units:makeRhythmBar(c)})),part:i+1
+}))}
+const degreeChoices=[
+ {interval:0,number:0,roman:'I'}, {interval:2,number:1,roman:'II'}, {interval:4,number:2,roman:'III'},
+ {interval:5,number:3,roman:'IV'}, {interval:7,number:4,roman:'V'}, {interval:9,number:5,roman:'VI'},
+ {interval:11,number:6,roman:'VII'}, {interval:10,number:6,roman:'♭VII'}
+];
+const pitchLetters=['C','D','E','F','G','A','B'];
+const naturalPC=[0,2,4,5,7,9,11];
+// The chord is spelled by diatonic letter, so C# major uses E#, not F.
+function spellOnLetter(letter,pc){
+ const nat=naturalPC[pitchLetters.indexOf(letter)];
+ let diff=((pc-nat+18)%12)-6;
+ return letter+(diff>0?'#'.repeat(diff):'b'.repeat(-diff));
+}
+function degreeSpelling(key,degree){
+ const letter=pitchLetters[(pitchLetters.indexOf(key[0])+degree.number)%7];
+ return spellOnLetter(letter,(keyRootMidi[key]+degree.interval)%12);
+}
+function chordToneSpelling(rootSpell,degreeOffset,pc){
+ const letter=pitchLetters[(pitchLetters.indexOf(rootSpell[0])+degreeOffset)%7];
+ return spellOnLetter(letter,pc);
+}
+function abcSpelled(midi,spelling){
+ const accidental=spelling.slice(1),letter=spelling[0];
+ const pref=accidental.startsWith('#')?'^'.repeat(accidental.length):accidental.startsWith('b')?'_'.repeat(accidental.length):'';
+ const oct=Math.floor(midi/12)-1;
+ return pref+(oct>=5?letter.toLowerCase()+"'".repeat(oct-5):letter+','.repeat(Math.max(0,4-oct)));
+}
+function chordRoman(degree,type){
+ let roman=degree.roman;
+ if(type==='min'||type==='min7')roman=roman.toLowerCase();
+ return roman+(type==='7'||type==='min7'?'7':type==='maj7'?'maj7':'');
+}
+function genChords(){
+ const c=config.chords,key=pick(keyNames),root=keyRootMidi[key],flat=!sharpKeys.has(key)&&key!=='C';
+ const bars=[];
+ for(let i=0;i<c.bars;i++){
+  const patt=pick(c.patterns),durations=patt==='4'?[4]:patt==='3+1'?[3,1]:[2,2];
+  const events=durations.map(dur=>{
+   const degree=pick(degreeChoices),type=pick(c.qualities);
+   let r=root+degree.interval;while(r>71)r-=12;
+   const intervals=type==='min'?[0,3,7]:type==='min7'?[0,3,7,10]:type==='7'?[0,4,7,10]:type==='maj7'?[0,4,7,11]:[0,4,7];
+   const rootName=degreeSpelling(key,degree);
+   let notes=intervals.map((offset,j)=>({
+    midi:r+offset,spell:chordToneSpelling(rootName,[0,2,4,6][j],(r+offset)%12)
+   }));
+   const inv=c.inversions?Math.floor(Math.random()*intervals.length):0;
+   for(let k=0;k<inv;k++)notes[k].midi+=12;
+   notes.sort((a,b)=>a.midi-b.midi);
+   while(notes[0].midi<60)notes.forEach(n=>n.midi+=12);
+   while(notes[notes.length-1].midi>87)notes.forEach(n=>n.midi-=12);
+   const bassType=pick(c.bass);
+   const offset={root:0,third:intervals[1],fifth:7,seventh:intervals[3]??10,ninth:2}[bassType];
+   let bass=r-24+offset;
+   while(bass>55)bass-=12;
+   while(bass<36)bass+=12;
+   const bassStep={root:0,third:2,fifth:4,seventh:6,ninth:1}[bassType];
+   const bassName=chordToneSpelling(rootName,bassStep,bass%12);
+   const suffix={maj:'',min:'m',min7:'m7','7':'7',maj7:'maj7'}[type];
+   const symbol=rootName+suffix+(r%12!==bass%12?'/'+bassName:'');
+   return {dur,tones:notes.map(n=>n.midi),toneSpells:notes.map(n=>n.spell),bass,bassSpell:bassName,bassType,type,symbol,roman:chordRoman(degree,type)};
+  });
+  bars.push({events,measure:i+1});
+ }
+ return range(Math.ceil(bars.length/8)).map(i=>({bars:bars.slice(i*8,i*8+8),page:i+1,key}));
+}
+function make(){exercises=[genScales(),genRhythm(),genChords()];indexes=[0,0,0];render()}
+function unitABC(u){return (u.rest?'z':'c')+u.dur}
+// Unlike the other sections, scales are a real keyboard with lit notes, not a score.
+const noteNamesSharp=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+const noteNamesFlat=['C','D♭','D','E♭','E','F','G♭','G','A♭','A','B♭','B'];
+const blackPitchClasses=new Set([1,3,6,8,10]);
+function midiName(m,flat){return (flat?noteNamesFlat:noteNamesSharp)[m%12]+(Math.floor(m/12)-1)}
+// Widely taught one-octave ascending fingerings, low note to high note.
+// 1 = thumb, 5 = little finger. Natural minor, not harmonic/melodic minor.
+const scaleFingerings={
+ major:{
+  'C':{RH:'12312345',LH:'54321321'},'G':{RH:'12312345',LH:'54321321'},
+  'D':{RH:'12312345',LH:'54321321'},'A':{RH:'12312345',LH:'54321321'},
+  'E':{RH:'12312345',LH:'54321321'},'B':{RH:'12312345',LH:'43214321'},
+  'F#':{RH:'23412312',LH:'43213214'},'C#':{RH:'23123412',LH:'32143213'},
+  'F':{RH:'12341234',LH:'54321321'},'Bb':{RH:'41231234',LH:'32143213'},
+  'Eb':{RH:'31234123',LH:'32143213'},'Ab':{RH:'34123123',LH:'32143213'}
+ },
+ minor:{
+  'C':{RH:'12312345',LH:'54321321'},'G':{RH:'12312345',LH:'54321321'},
+  'D':{RH:'12312345',LH:'54321321'},'A':{RH:'12312345',LH:'54321321'},
+  'E':{RH:'12312345',LH:'54321321'},'B':{RH:'12312345',LH:'43214321'},
+  'F#':{RH:'23123123',LH:'43213214'},'C#':{RH:'34123123',LH:'32143213'},
+  'F':{RH:'12341234',LH:'54321321'},'Bb':{RH:'21231234',LH:'21321432'},
+  'Eb':{RH:'31234123',LH:'21432132'},'Ab':{RH:'34123123',LH:'32132143'}
+ }
+};
+// Two octaves need a connecting crossover at the middle tonic. For normal
+// scales, RH substitutes its opening finger for the one-octave finishing finger;
+// LH keeps the first octave then continues without restarting on finger 5.
+function scaleFingers(key,mode,hand,octaves){
+ const one=scaleFingerings[mode][key][hand].split('').map(Number);
+ if(octaves===1)return one;
+ if(hand==='LH')return one.concat(one.slice(1));
+ if(key==='F' && (mode==='major'||mode==='minor'))return one.slice(0,7).concat([1,2,3,4,1,2,3,4]);
+ if(key==='F#' && mode==='minor')return one.slice(0,7).concat([3,4,1,2,3,1,2,3]);
+ if(key==='Bb' && mode==='minor')return one.slice(0,7).concat([4,1,2,3,1,2,3,4]);
+ return one.slice(0,7).concat(one);
+}
+function drawScaleKeyboard(x){
+ const flat=!sharpKeys.has(x.key)&&x.key!=='C';
+ const asc=x.notes.slice(0,7*config.scales.octaves+1);
+ const lhNumbers=scaleFingers(x.key,x.mode,'LH',config.scales.octaves);
+ const rhNumbers=scaleFingers(x.key,x.mode,'RH',config.scales.octaves);
+ const left=new Map(asc.map((n,i)=>[n-12,lhNumbers[i]]));
+ const right=new Map(asc.map((n,i)=>[n,rhNumbers[i]]));
+ const showL=x.hand==='LH'||x.hand==='Both',showR=x.hand==='RH'||x.hand==='Both';
+ const roots=[...(showL?[asc[0]-12]:[]),...(showR?[asc[0]]:[])];
+ const ends=[...(showL?[asc[asc.length-1]-12]:[]),...(showR?[asc[asc.length-1]]:[])];
+ const start=Math.floor(Math.min(...roots)/12)*12;
+ const end=Math.floor(Math.max(...ends)/12)*12+11;
+ const keyW=42,blackW=26,whiteHeight=186,blackHeight=116;
+ let whiteIndex=0,white=[],black=[];
+ for(let m=start;m<=end;m++){
+  const pc=m%12,isBlack=blackPitchClasses.has(pc);
+  const lh=showL&&left.has(m),rh=showR&&right.has(m);
+  const lit=lh||rh,tonic=lit&&pc===keyRootMidi[x.key]%12;
+  const tone=lh&&rh?'both':lh?'lh':rh?'rh':'';
+  const cls=`${isBlack?'piano-black':'piano-white'} ${lit?'lit '+tone:''} ${tonic?'tonic':''}`;
+  const name=midiName(m,flat);
+  const lhNum=lh?left.get(m):null,rhNum=rh?right.get(m):null;
+  const badge=`<span class="key-fingers ${lh&&rh?'dual':''}">${lh?`<span class="finger-badge lh" aria-label="Left-hand finger ${lhNum}">${lhNum}</span>`:''}${rh?`<span class="finger-badge rh" aria-label="Right-hand finger ${rhNum}">${rhNum}</span>`:''}</span>`;
+  const tooltip=`${name}${lh?' · Left hand finger '+lhNum:''}${rh?' · Right hand finger '+rhNum:''}${tonic?' · Tonic':''}`;
+  if(!isBlack){
+   white.push(`<div class="${cls}" style="left:${whiteIndex*keyW}px;width:${keyW}px;height:${whiteHeight}px" title="${tooltip}">${badge}<span class="key-label">${name}</span></div>`);
+   whiteIndex++;
+  }else{
+   let leftPx=whiteIndex*keyW-blackW/2;
+   black.push(`<div class="${cls}" style="left:${leftPx}px;width:${blackW}px;height:${blackHeight}px" title="${tooltip}">${badge}<span class="key-label">${name.replace(/\d+/,'')}</span></div>`);
+  }
+ }
+ const notes=asc.map(m=>`<span class="pitch-pill">${midiName(m,flat).replace(/\d+$/,'')}</span>`).join('<span class="pitch-divider">→</span>');
+ $('notation').innerHTML=`<div class="scale-keyboard-area">
+   <div class="keyboard-legend"><span><i class="legend-dot root"></i>Tonic</span>${showL?'<span><i class="legend-dot left"></i>Blue numbers: left hand</span>':''}${showR?'<span><i class="legend-dot right"></i>Green numbers: right hand</span>':''}</div>
+   <div class="keyboard-scroller" tabindex="0" aria-label="Piano keyboard with finger numbers for ${x.key} ${x.mode} scale. Scroll to view all keys.">
+    <div class="piano-keyboard" style="width:${whiteIndex*keyW}px;height:${whiteHeight}px">${white.join('')}${black.join('')}</div>
+   </div>
+   <div class="scale-sequence-heading">Notes ascending <span>then reverse to descend</span></div>
+   <div class="scale-pitches">${notes}</div>
+   <p class="keyboard-hint">Finger numbers: 1 = thumb, 2 = index, 3 = middle, 4 = ring, 5 = pinky. Reverse the fingering when descending. In hands-together mode, a key may show two numbers if the ranges overlap.</p>
+  </div>`;
+}
+function rhythmABC(x){let bars=x.bars.map(b=>b.units.map(unitABC).join(' ')+' |').join(' ');return `X:1\nT:\n%%barsperstaff ${config.rhythm.group}\nM:2/4\nL:1/8\nQ:1/4=${config.rhythm.bpm}\nK:C\nV:1 clef=perc\n[V:1] ${bars}]`}
+// Standalone engraved 2/4 percussion notation: no external rendering dependency.
+function drawRhythmSheet(x){
+ const ink='#27332f',soft='#89968e',barWidth=260,firstX=89,top0=73,rowStep=152;
+ const rows=Math.ceil(x.bars.length/3),height=top0+(rows-1)*rowStep+92;
+ const parts=[`<svg class="rhythm-sheet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 ${height}" role="img" aria-label="Rhythm exercise: ${x.bars.length} bars in two-four time">`];
+ const ln=(x1,y1,x2,y2,w=1.2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${ink}" stroke-width="${w}"/>`;
+ const path=(d,w=2.4)=>`<path d="${d}" fill="none" stroke="${ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+ function noteHead(px,py,open=false){return `<ellipse cx="${px}" cy="${py}" rx="8.2" ry="5.4" transform="rotate(-23 ${px} ${py})" fill="${open?'#ffffff':ink}" stroke="${ink}" stroke-width="${open?2.4:.7}"/>`}
+ function rest(px,py,duration){
+  if(duration===4)return `<rect x="${px-9}" y="${py+8}" width="18" height="5" fill="${ink}"/>`;
+  if(duration===2)return path(`M ${px+2} ${py-14} l -8 9 l 9 8 l -7 10 l 7 8 l -5 3` ,3);
+  return `<circle cx="${px-2}" cy="${py-5}" r="3.2" fill="${ink}"/>${path(`M ${px+2} ${py-6} Q ${px+8} ${py+6} ${px-4} ${py+15}`,2.5)}`;
+ }
+ for(let r=0;r<rows;r++){
+  const top=top0+r*rowStep;
+  const count=Math.min(3,x.bars.length-r*3);
+  const staffEnd=firstX+count*barWidth;
+  for(let k=0;k<5;k++)parts.push(ln(20,top+k*11,staffEnd,top+k*11,.9));
+  // Percussion clef and repeated 2/4 signature, as in traditional exercise books.
+  parts.push(`<rect x="27" y="${top+10}" width="4" height="22" rx="1" fill="${ink}"/><rect x="34" y="${top+10}" width="4" height="22" rx="1" fill="${ink}"/>`);
+  parts.push(`<text x="56" y="${top+19}" font-family="Georgia,serif" font-size="23" font-weight="700" text-anchor="middle" fill="${ink}">2</text>`);
+  parts.push(`<text x="56" y="${top+42}" font-family="Georgia,serif" font-size="23" font-weight="700" text-anchor="middle" fill="${ink}">4</text>`);
+  for(let col=0;col<count;col++){
+   const bar=x.bars[r*3+col],bx=firstX+col*barWidth,headY=top+15;
+   parts.push(`<text x="${bx+15}" y="${top-21}" font-size="13" font-family="Georgia,serif" fill="${soft}">${(x.part-1)*config.rhythm.group+r*3+col+1}</text>`);
+   let beat=0;const positioned=[];
+   for(const u of bar.units){const px=bx+30+beat*(barWidth-67)/4;positioned.push({...u,px,py:headY});beat+=u.dur}
+   // Beams connect contiguous eighth notes; isolated eighths get a curved flag.
+   const beamIndices=new Set();
+   for(let j=0;j<positioned.length;){
+    if(positioned[j].dur!==1||positioned[j].rest){j++;continue}
+    let stop=j+1;
+    while(stop<positioned.length&&positioned[stop].dur===1&&!positioned[stop].rest)stop++;
+    if(stop-j>=2){
+     const beamY=top-24;
+     for(let k=j;k<stop;k++){beamIndices.add(k);parts.push(ln(positioned[k].px+7.3,headY,positioned[k].px+7.3,beamY,1.8))}
+     parts.push(ln(positioned[j].px+7.3,beamY,positioned[stop-1].px+7.3,beamY,5.3));
+    }
+    j=stop;
+   }
+   for(let j=0;j<positioned.length;j++){
+    const u=positioned[j],px=u.px;
+    if(u.rest){parts.push(rest(px,headY,u.dur));continue}
+    parts.push(noteHead(px,headY,u.dur===4));
+    if(!beamIndices.has(j)){
+     parts.push(ln(px+7.3,headY,px+7.3,top-22,1.8));
+     if(u.dur===1)parts.push(path(`M ${px+7.3} ${top-22} C ${px+29} ${top-15}, ${px+25} ${top-4}, ${px+19} ${top+3}`,2.8));
+    }
+   }
+   parts.push(ln(bx+barWidth,top,bx+barWidth,top+44,col===count-1?2.4:1.2));
+   if(col===count-1)parts.push(ln(bx+barWidth-4,top,bx+barWidth-4,top+44,.8));
+  }
+ }
+ parts.push('</svg>');
+ $('notation').innerHTML=`<div class="rhythm-sheet-wrap">${parts.join('')}</div>`;
+}
+function chordABC(x){
+ const flat=!sharpKeys.has(x.key)&&x.key!=='C',shown=config.chords;
+ const rh=x.bars.map(bar=>bar.events.map(e=>{
+  const symbol=shown.showChordNames?`"^${e.symbol}"`:'';
+  const degree=`"_${e.roman}"`;
+  return `${symbol}${degree}[${e.tones.map((m,j)=>abcSpelled(m,e.toneSpells[j])).join('')}]${e.dur*2}`;
+ }).join(' ')+' |').join(' ');
+ const lh=x.bars.map(bar=>bar.events.map(e=>abcSpelled(e.bass,e.bassSpell)+(e.dur*2)).join(' ')+' |').join(' ');
+ return `X:1\nT:\n%%score { ( RH ) ( LH ) }\n%%barsperstaff 2\nM:4/4\nL:1/8\nQ:1/4=${config.chords.bpm}\nK:C\nV:RH clef=treble\nV:LH clef=bass\n[V:RH] ${rh}]\n[V:LH] ${lh}]`;
+}
+// Self-contained SVG fallback: music stays visible even without a network connection.
+function drawChordSVG(x){
+ const ink='#27352f',muted='#84928b',accent='#206c59';
+ const w=970,rowH=262,rows=Math.ceil(x.bars.length/2),height=rows*rowH+26,halfBar=420;
+ const parts=[`<svg class="chord-score" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${height}" role="img" aria-label="Eight-bar piano score with Roman numerals and optional chord symbols">`];
+ const line=(ax,ay,bx,by,width=1)=>`<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${ink}" stroke-width="${width}"/>`;
+ const ellipse=(cx,cy,open)=>`<ellipse cx="${cx}" cy="${cy}" rx="8" ry="5.4" transform="rotate(-18 ${cx} ${cy})" fill="${open?'white':ink}" stroke="${ink}" stroke-width="${open?2:1}"/>`;
+ const esc=t=>String(t).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+ const naturals=[0,2,4,5,7,9,11];
+ const staffY=(m,top,clef,spelling)=>{
+   const oct=Math.floor(m/12)-1,letter=pitchLetters.indexOf(spelling[0]),index=oct*7+letter;
+   const bottom=clef==='treble'?4*7+2:2*7+4; // E4, G2
+   return top+40-(index-bottom)*5;
+ };
+ function drawPitch(m,spelling,xp,top,clef,open=false){
+  const y=staffY(m,top,clef,spelling);let out='';
+  if(y<=top-10)for(let t=top-10;t>=y;t-=10)out+=line(xp-14,t,xp+15,t,1.2);
+  if(y>=top+50)for(let t=top+50;t<=y;t+=10)out+=line(xp-14,t,xp+15,t,1.2);
+  const accidental=spelling.slice(1);
+  if(accidental)out+=`<text x="${xp-28}" y="${y+5}" font-family="Georgia,serif" font-size="20" fill="${ink}">${accidental.includes('b')?'♭':'♯'}</text>`;
+  return out+ellipse(xp,y,open);
+ }
+ for(let row=0;row<rows;row++){
+  const top=125+row*rowH,bottom=top+105,firstX=83;
+  for(let k=0;k<5;k++){
+   parts.push(line(25,top+10*k,firstX+2*halfBar,top+10*k,.9));
+   parts.push(line(25,bottom+10*k,firstX+2*halfBar,bottom+10*k,.9));
+  }
+  parts.push(`<text x="29" y="${top+38}" font-size="54" font-family="Noto Music,DejaVu Sans,serif" fill="${ink}">𝄞</text>`);
+  parts.push(`<text x="32" y="${bottom+34}" font-size="44" font-family="Noto Music,DejaVu Sans,serif" fill="${ink}">𝄢</text>`);
+  parts.push(`<text x="68" y="${top+19}" font-family="Georgia,serif" font-size="19" text-anchor="middle">4</text><text x="68" y="${top+42}" font-family="Georgia,serif" font-size="19" text-anchor="middle">4</text>`);
+  for(let col=0;col<2;col++){
+   const bar=x.bars[row*2+col];if(!bar)continue;
+   const barX=firstX+col*halfBar;
+   parts.push(`<text x="${barX+11}" y="${top-87}" font-size="12" font-family="Arial,sans-serif" fill="${muted}">${bar.measure}</text>`);
+   let beats=0;
+   for(const e of bar.events){
+    const nx=barX+82+beats*79;
+    if(config.chords.showChordNames){
+     parts.push(`<text x="${nx-9}" y="${top-76}" font-size="16" font-family="Arial,sans-serif" font-weight="700" fill="${accent}">${esc(e.symbol)}</text>`);
+    }
+    parts.push(`<text x="${nx-9}" y="${top-53}" font-size="16" font-family="Georgia,serif" font-weight="bold" fill="${ink}">${esc(e.roman)}</text>`);
+    const trebleYs=e.tones.map((m,j)=>staffY(m,top,'treble',e.toneSpells[j]));
+    e.tones.forEach((m,j)=>parts.push(drawPitch(m,e.toneSpells[j],nx,top,'treble',e.dur>=2)));
+    const up=trebleYs.reduce((a,b)=>a+b,0)/trebleYs.length>=top+20;
+    let y=up?Math.min(...trebleYs):Math.max(...trebleYs);
+    if(e.dur!==4)parts.push(line(nx+(up?7:-7),y,nx+(up?7:-7),y+(up?-34:34),2));
+    if(e.dur===3)parts.push(`<circle cx="${nx+19}" cy="${trebleYs[0]}" r="2.3" fill="${ink}"/>`);
+    const ly=staffY(e.bass,bottom,'bass',e.bassSpell);
+    parts.push(drawPitch(e.bass,e.bassSpell,nx,bottom,'bass',e.dur>=2));
+    const lup=ly>=bottom+20;
+    if(e.dur!==4)parts.push(line(nx+(lup?7:-7),ly,nx+(lup?7:-7),ly+(lup?-34:34),1.8));
+    if(e.dur===3)parts.push(`<circle cx="${nx+19}" cy="${ly}" r="2.3" fill="${ink}"/>`);
+    beats+=e.dur;
+   }
+   parts.push(line(barX+halfBar,top,barX+halfBar,top+40,1.4));
+   parts.push(line(barX+halfBar,bottom,barX+halfBar,bottom+40,1.4));
+  }
+ }
+ parts.push('</svg>');
+ $('notation').innerHTML=`<div class="chord-score-wrap">${parts.join('')}</div>`;
+}
+function drawChordScore(x){drawChordSVG(x)}
+function drawABC(str){if(!window.ABCJS){$('notation').innerHTML='<div class="fallback">Music renderer could not load. Connect to the internet and reload this page to display notation.</div>';return}try{ABCJS.renderAbc('notation',str,{responsive:'resize',add_classes:true,staffwidth:680,scale:1.2,paddingtop:10,paddingbottom:8,format:{},selectTypes:false});}catch(err){$('notation').innerHTML='<div class="fallback">Could not render this exercise: '+String(err.message)+'</div>';}}
+function render(){let s=sections[section],arr=exercises[section],i=indexes[section],x=arr[i];$('sectionEyebrow').textContent=s.eyebrow;$('sectionTitle').textContent=s.title;$('sectionDescription').textContent=s.description;$('sectionTag').textContent=s.tag;$('exerciseCount').textContent=`Exercise ${i+1} of ${arr.length}`;$('prev').disabled=i===0;$('next').disabled=i===arr.length-1;document.querySelectorAll('[data-section]').forEach(b=>b.classList.toggle('active',+b.dataset.section===section));$('nextSection').textContent=section===2?'Back to scales ↻':'Next section →';$('scoreTitle').textContent=section===0?'Fingerings on piano keys':section===1?'Read the 2/4 rhythm':'Play the treble chords with left-hand bass';let bpm=[config.scales.bpm,config.rhythm.bpm,config.chords.bpm][section];$('scoreMeta').textContent='♩ = '+bpm;
+if(section===0){$('exerciseName').textContent=`${x.key} ${x.mode} · ${x.hand==='LH'?'Left hand':x.hand==='RH'?'Right hand':'Together'}`;$('instruction').textContent=`${config.scales.octaves} octave${config.scales.octaves>1?'s':''} · Play legato up and down. ${x.hand==='Both'?'Mirror the line with both hands, in their usual octaves.':'Use your '+(x.hand==='LH'?'left':'right')+' hand.'} Numbers on the keys show which fingers to use. Gold marks the tonic.`;drawScaleKeyboard(x)}
+if(section===1){$('exerciseName').textContent=`Rhythm group ${x.part} · ${x.bars.length} bars`;$('instruction').textContent=`Every bar is exactly 2/4: two quarter-note beats (or four eighth-note subdivisions). Clap or play one note for each written attack, count “1 & 2 &”, and hold sustained notes for their full value. The barlines separate each two-beat measure.`;drawRhythmSheet(x)}
+if(section===2){
+ const c=config.chords,first=x.bars[0].measure,last=x.bars[x.bars.length-1].measure;
+ $('exerciseName').textContent=`Bars ${first}–${last}`;
+ $('exerciseCount').textContent=`Page ${i+1} of ${arr.length} · ${x.bars.length} measures`;
+ $('chordKeyBar').classList.toggle('hidden',!c.showKey);
+ if(c.showKey)$('chordKeyBar').innerHTML=`<span>TONAL CENTER</span><strong>${x.key} major</strong>`;
+ $('instruction').textContent='Roman numerals indicate each chord’s degree relative to the key (uppercase = major, lowercase = minor). Treble clef: play the chord. Bass clef: play the bass note. Hide key and chord names independently to quiz yourself.';
+ $('scoreTitle').textContent='Eight-bar chord progression';
+ drawChordScore(x);
+}else{$('chordKeyBar').classList.add('hidden')}
+renderSettings();syncMetronomeToExercise()}
+function switchSection(n){section=(n+3)%3;render()}
+function move(n){let next=indexes[section]+n;if(next<0){if(section>0)switchSection(section-1);return}if(next>=exercises[section].length){if(section<2)switchSection(section+1);return}indexes[section]=next;render()}
+function slider(label,key,min,max,step,suffix=''){let value=config[['scales','rhythm','chords'][section]][key];return `<div class="setting"><div class="setting-line"><label for="setting-${key}">${label}</label><output>${value}${suffix}</output></div><input data-range="${key}" id="setting-${key}" type="range" min="${min}" max="${max}" step="${step}" value="${value}"></div>`}
+function chips(label,key,options){let vals=config[['scales','rhythm','chords'][section]][key];if(!Array.isArray(vals))vals=vals?[true]:[];return `<div class="setting"><div class="setting-line"><label>${label}</label></div><div class="chips">${options.map(([v,t])=>`<button class="chip ${vals.includes(v)?'on':''}" data-group="${key}" data-value="${v}" aria-pressed="${vals.includes(v)}">${t}</button>`).join('')}</div></div>`}
+function renderSettings(){let html='';if(section===0){html+=slider('Random keys','keys',1,12,1,' / 12')+slider('Octaves','octaves',1,2,1)+slider('Tempo','bpm',40,160,5,' bpm')+chips('Scale types','modes',[['major','Major'],['minor','Natural minor']])+chips('Hand sequence','hands',[['LH','Left'],['RH','Right'],['Both','Together']])}else if(section===1){html+=slider('Total bars','bars',6,48,6)+slider('Bars per page','group',6,12,6)+slider('Tempo','bpm',40,160,5,' bpm')+slider('Eighth-note frequency','eighthDensity',0,100,5,'%')+`<p class="setting-hint" style="margin:-11px 0 17px">Always 2/4 · each bar lasts exactly two beats.</p>`+chips('Add rests','rests',[[true,'Include rests']])}else{html+=`<div class="setting"><div class="setting-line"><label>Study mode</label></div>
+ <div class="toggle-row"><label for="toggle-key">Show key</label><button id="toggle-key" class="toggle-switch ${config.chords.showKey?'on':''}" data-display="showKey" role="switch" aria-checked="${config.chords.showKey}" aria-label="Show key"></button></div>
+ <div class="toggle-row"><label for="toggle-chord-names">Show chord names</label><button id="toggle-chord-names" class="toggle-switch ${config.chords.showChordNames?'on':''}" data-display="showChordNames" role="switch" aria-checked="${config.chords.showChordNames}" aria-label="Show chord names"></button></div>
+ <p class="setting-hint">Roman numerals always stay visible. Hiding answers never changes the progression.</p></div>`+
+ slider('Number of bars','bars',8,64,8)+slider('Tempo','bpm',40,160,5,' bpm')+
+ chips('Chord qualities','qualities',[['maj','Major'],['min','Minor'],['min7','Minor 7'],['7','Dominant 7'],['maj7','Major 7']])+
+ chips('Change pattern (beats)','patterns',[['4','4'],['3+1','3 + 1'],['2+2','2 + 2']])+
+ chips('Bass notes','bass',[['root','Root'],['third','3rd'],['fifth','5th'],['seventh','7th'],['ninth','2nd / 9th']])+
+ chips('Voicing','inversions',[[true,'Allow inversions']])}html+='<p class="setting-hint">Changing musical parameters generates new exercises. The show/hide switches keep your current chords.</p>';$('dynamicSettings').innerHTML=html;
+document.querySelectorAll('[data-display]').forEach(el=>el.addEventListener('click',()=>{let k=el.dataset.display;config.chords[k]=!config.chords[k];render()}));
+document.querySelectorAll('[data-range]').forEach(el=>el.addEventListener('input',()=>{config[['scales','rhythm','chords'][section]][el.dataset.range]=Number(el.value);if(el.dataset.range==='bpm'){el.closest('.setting').querySelector('output').textContent=el.value+' bpm';$('scoreMeta').textContent='♩ = '+el.value;syncMetronomeToExercise()}else regenerateSection()}));document.querySelectorAll('[data-group]').forEach(el=>el.addEventListener('click',()=>{let c=config[['scales','rhythm','chords'][section]],key=el.dataset.group;let val=el.dataset.value;if(key==='rests'||key==='inversions'){c[key]=!c[key]}else{let a=c[key];c[key]=a.includes(val)?a.length>1?a.filter(v=>v!==val):a:[...a,val]}regenerateSection()}))}
+function regenerateSection(){exercises[section]=[genScales,genRhythm,genChords][section]();indexes[section]=0;render()}
+function setAlloc(which,v){let other=which===0?1:0;let max=55-alloc[other];alloc[which]=Math.min(v,max);alloc[2]=60-alloc[0]-alloc[1];$('split').value=alloc[0];$('rhythmTime').value=alloc[1];$('splitText').textContent=alloc[0]+' min';$('rhythmTimeText').textContent=alloc[1]+' min';$('chordTimeText').textContent=`Chords: ${alloc[2]} min · Total: 60 min`;alloc.forEach((a,i)=>$('time'+i).textContent=a+' min')}
+function updateClock(){$('clock').textContent=`${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;if(remaining===0&&timerRunning){clearInterval(interval);timerRunning=false;$('startTimer').textContent='▶ Start';alert('Session complete — great work!')}}
+
+// Web Audio click track: schedule short oscillators against the audio clock
+// (rather than relying on setInterval for individual click timing).
+const met={bpm:80,beats:4,playing:false,accent:true,follow:true,
+ context:null,bus:null,timer:null,nextAt:0,beatIndex:0,visualTimers:[],tapTimes:[]};
+function showMetronome(){
+ $('metBpmValue').textContent=met.bpm;
+ $('metBpmSlider').value=met.bpm;
+ $('metBeatRow').setAttribute('aria-label',`Beat indicators: ${met.beats} beats per bar`);
+ $('metBeatRow').innerHTML=Array.from({length:met.beats},(_,i)=>`<span class="met-beat ${i===0?'downbeat':''}" aria-hidden="true"></span>`).join('');
+ $('metMeter2').classList.toggle('on',met.beats===2);$('metMeter4').classList.toggle('on',met.beats===4);
+ $('metMeter2').setAttribute('aria-pressed',String(met.beats===2));$('metMeter4').setAttribute('aria-pressed',String(met.beats===4));
+ $('metFollow').checked=met.follow;$('metAccent').checked=met.accent;
+ $('metronomePanel').classList.toggle('is-playing',met.playing);
+ $('metToggle').textContent=met.playing?'■ Stop click':'▶ Start click';
+ $('metToggle').setAttribute('aria-pressed',String(met.playing));
+ $('metStatus').textContent=met.playing?'Playing':'Ready';
+ $('metHint').textContent=met.follow?'Following the exercise tempo and meter.':'Custom tempo and meter.';
+}
+function metVisualBeat(index){
+ const dots=$('metBeatRow').children;
+ for(let i=0;i<dots.length;i++)dots[i].classList.toggle('active',i===index);
+}
+function clearMetVisuals(){
+ met.visualTimers.forEach(clearTimeout);met.visualTimers=[];
+ [...$('metBeatRow').children].forEach(dot=>dot.classList.remove('active'));
+}
+function stopMetronome(){
+ met.playing=false;
+ if(met.timer!==null){clearInterval(met.timer);met.timer=null}
+ clearMetVisuals();
+ if(met.bus&&met.context){met.bus.gain.cancelScheduledValues(met.context.currentTime);met.bus.gain.setValueAtTime(0,met.context.currentTime);try{met.bus.disconnect()}catch{}}
+ met.bus=null;
+ showMetronome();
+}
+function scheduleMetClick(at,beat){
+ const accented=met.accent&&beat===0,ctx=met.context;
+ const osc=ctx.createOscillator(),gain=ctx.createGain();
+ osc.type='sine';
+ osc.frequency.setValueAtTime(accented?1320:930,at);
+ osc.frequency.exponentialRampToValueAtTime(accented?790:570,at+0.044);
+ gain.gain.setValueAtTime(.0001,at);
+ gain.gain.exponentialRampToValueAtTime(accented?.23:.14,at+.003);
+ gain.gain.exponentialRampToValueAtTime(.0001,at+.060);
+ osc.connect(gain);gain.connect(met.bus);
+ osc.start(at);osc.stop(at+.064);
+ const delay=Math.max(0,(at-ctx.currentTime)*1000);
+ const timer=setTimeout(()=>{if(met.playing)metVisualBeat(beat);met.visualTimers=met.visualTimers.filter(t=>t!==timer)},delay);
+ met.visualTimers.push(timer);
+}
+function scheduleMetronome(){
+ if(!met.playing||!met.context)return;
+ const now=met.context.currentTime;
+ while(met.nextAt<now+.11){
+  const beat=met.beatIndex;
+  scheduleMetClick(met.nextAt,beat);
+  met.nextAt+=60/met.bpm;
+  met.beatIndex=(met.beatIndex+1)%met.beats;
+ }
+}
+async function startMetronome(){
+ if(met.playing)return;
+ const Ctx=window.AudioContext||window.webkitAudioContext;
+ if(!Ctx){$('metHint').textContent='Audio playback is not supported in this browser.';return}
+ try{
+  if(!met.context)met.context=new Ctx();
+  await met.context.resume();
+  if(met.playing)return;
+  met.bus=met.context.createGain();met.bus.gain.value=.9;met.bus.connect(met.context.destination);
+  met.playing=true;met.nextAt=met.context.currentTime+.03;met.beatIndex=0;
+  showMetronome();scheduleMetronome();met.timer=setInterval(scheduleMetronome,25);
+ }catch(e){stopMetronome();$('metHint').textContent='Audio could not start. Try tapping Start again.';console.warn('Metronome audio:',e)}
+}
+function changeMetronome({bpm=met.bpm,beats=met.beats,follow=met.follow}={}){
+ const cleanBpm=Math.min(220,Math.max(40,Math.round(bpm)));
+ const cleanBeats=beats===2?2:4;
+ const changed=cleanBpm!==met.bpm||cleanBeats!==met.beats;
+ // Reset on tempo/meter edits so the next beat starts cleanly at beat one.
+ const restart=changed&&met.playing;
+ if(restart)stopMetronome();
+ met.bpm=cleanBpm;met.beats=cleanBeats;met.follow=follow;
+ showMetronome();
+ if(restart)startMetronome();
+}
+function syncMetronomeToExercise(){
+ if(!met.follow)return;
+ const c=config[['scales','rhythm','chords'][section]];
+ changeMetronome({bpm:c.bpm,beats:section===1?2:4,follow:true});
+}
+$('metToggle').addEventListener('click',()=>met.playing?stopMetronome():startMetronome());
+$('metMinus').addEventListener('click',()=>changeMetronome({bpm:met.bpm-1,follow:false}));
+$('metPlus').addEventListener('click',()=>changeMetronome({bpm:met.bpm+1,follow:false}));
+$('metBpmSlider').addEventListener('input',e=>changeMetronome({bpm:+e.target.value,follow:false}));
+$('metMeter2').addEventListener('click',()=>changeMetronome({beats:2,follow:false}));
+$('metMeter4').addEventListener('click',()=>changeMetronome({beats:4,follow:false}));
+$('metFollow').addEventListener('change',e=>{met.follow=e.target.checked;if(met.follow)syncMetronomeToExercise();else showMetronome()});
+$('metAccent').addEventListener('change',e=>{met.accent=e.target.checked;showMetronome()});
+$('metTap').addEventListener('click',()=>{
+ const now=performance.now();
+ met.tapTimes=met.tapTimes.filter(t=>now-t<3000).slice(-4);
+ met.tapTimes.push(now);
+ if(met.tapTimes.length>=2){
+  const gaps=met.tapTimes.slice(1).map((time,i)=>time-met.tapTimes[i]).filter(ms=>ms>=260&&ms<=1500);
+  if(gaps.length){const avg=gaps.reduce((a,b)=>a+b,0)/gaps.length;changeMetronome({bpm:60000/avg,follow:false})}
+ }else{$('metHint').textContent='Tap again to set your tempo.'}
+});
+window.addEventListener('pagehide',stopMetronome);
+
+$('startTimer').addEventListener('click',()=>{timerRunning=!timerRunning;if(timerRunning){$('startTimer').textContent='Ⅱ Pause';interval=setInterval(()=>{remaining=Math.max(0,remaining-1);updateClock()},1000)}else{clearInterval(interval);$('startTimer').textContent='▶ Resume'}});$('resetTimer').onclick=()=>{clearInterval(interval);timerRunning=false;remaining=3600;updateClock();$('startTimer').textContent='▶ Start'};
+$('prev').onclick=()=>move(-1);$('next').onclick=()=>move(1);$('nextSection').onclick=()=>switchSection(section+1);$('reRoll').onclick=regenerateSection;$('newSession').onclick=()=>{make();$('resetTimer').click()};document.querySelectorAll('[data-section]').forEach(b=>b.onclick=()=>switchSection(+b.dataset.section));$('split').oninput=e=>setAlloc(0,+e.target.value);$('rhythmTime').oninput=e=>setAlloc(1,+e.target.value);document.addEventListener('keydown',e=>{if(e.target.matches('input,button,textarea'))return;if(e.key==='ArrowLeft')move(-1);if(e.key==='ArrowRight')move(1);if(e.key==='ArrowUp')switchSection(section-1);if(e.key==='ArrowDown')switchSection(section+1)});make();
+</script></body></html>
