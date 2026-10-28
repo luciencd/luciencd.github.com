@@ -201,6 +201,19 @@
  .tools-sidebar .pitch-card:hover:not(.is-expanded) .pitch-chart{height:180px}
 }
 
+
+/* Support footer: gentle opt-in with clear, accessible outbound links. */
+.support-footer{margin:32px 0 18px;padding:26px 30px;background:#f0f7f1;border:1px solid #d5e5da;border-radius:18px;text-align:center}
+.support-footer h2{font:700 clamp(19px,2vw,24px) 'Space Grotesk',system-ui,sans-serif;letter-spacing:-.5px;color:#245a4e;margin:0 0 12px}
+.support-footer p{font-size:14px;color:#4e655a;line-height:1.65;max-width:690px;margin:0 auto 15px}
+.support-footer .support-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px auto 8px}
+.support-footer .support-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;font-weight:700;font-size:14px;padding:12px 18px;border-radius:10px;border:1px solid #9abfb0;color:#1a5d50;background:#fff;min-height:44px;transition:transform .15s,background .15s}
+.support-footer .support-btn.support-primary{background:#176e60;border-color:#176e60;color:#fff}
+.support-footer .support-btn:hover{transform:translateY(-1px);background:#e6f3eb}
+.support-footer .support-btn.support-primary:hover{background:#125a4f}
+.support-footer .support-btn:focus-visible{outline:3px solid #83beb0;outline-offset:3px}
+.support-footer .support-note{display:block;font-size:11px;line-height:1.5;color:#6e8177;margin-top:14px}
+@media(max-width:530px){.support-footer{padding:23px 17px}.support-footer .support-actions{flex-direction:column}.support-footer .support-btn{width:100%}}
 </style>
 </head>
 <body><div class="wrap">
@@ -256,6 +269,17 @@
 <div class="bottom-actions"><button class="btn" id="reRoll">↻ New random set</button><button class="btn primary" id="nextSection">Next section →</button></div>
 </main><aside class="panel settings"><h3>Exercise controls</h3><p class="sub">Tune the generator to your practice level.</p><div id="dynamicSettings"></div>
 <div class="hr"></div><h3>Session setup</h3><p class="sub">Allocate your 60 minutes across the three sections.</p><div class="setting"><div class="setting-line"><label for="split">Scale practice</label><output id="splitText">20 min</output></div><input id="split" type="range" min="5" max="45" step="5" value="20" /></div><div class="setting"><div class="setting-line"><label for="rhythmTime">Rhythm practice</label><output id="rhythmTimeText">20 min</output></div><input id="rhythmTime" type="range" min="5" max="45" step="5" value="20"/></div><div class="setting-hint" id="chordTimeText">Chords: 20 min · Total: 60 min</div><div class="session-controls"><button class="btn" id="newSession">↻ Fresh session</button></div></aside></div>
+<section class="support-footer" aria-labelledby="supportTitle">
+<h2 id="supportTitle">❤️ Enjoying Practice Lab?</h2>
+<p>If this tool or any of my TikTok content has helped you on your musical journey, please consider supporting my work!</p>
+<p>You can <strong>buy me a $5 coffee</strong> or, if you're thinking about getting a piano, <strong>purchase one through my affiliate recommendations</strong>. Either way, your support helps me keep creating free tools and educational content for aspiring musicians.</p>
+<div class="support-actions">
+<a class="support-btn support-primary" href="https://venmo.com/u/bardmaxxing" target="_blank" rel="noopener noreferrer" aria-label="Donate five dollars via Venmo to bardmaxxing">♥ Donate $5 on Venmo</a>
+<a class="support-btn" href="https://bardmaxxing.com/my-gear" target="_blank" rel="noopener noreferrer">🎹 Shop Recommended Pianos</a>
+</div>
+<p style="margin-top:13px">Thank you for being part of this journey!</p>
+<small class="support-note">Venmo opens my @bardmaxxing profile; enter $5 when you pay. Gear links may earn me a commission at no additional cost to you.</small>
+</section>
 <div class="footer">Practice Lab · Generated notation, not fixed drills · Keyboard: ← → for exercises, ↑ ↓ for sections</div>
 </div>
 <script>
