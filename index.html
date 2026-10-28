@@ -124,7 +124,7 @@
 .met-check input{width:15px;height:15px;margin:0;accent-color:var(--accent)}
 .met-caption{font-size:11px;line-height:1.5;margin:10px 0 0;color:#778c7c}
 
-/* Live vocal pitch monitor: C3–C6 pitch trace and half-second tuner. */
+/* Live vocal pitch monitor: F2–C6 pitch trace and half-second tuner. */
 .pitch-card{margin:4px 0 14px;padding:16px 14px 13px;border-radius:15px;border:1px solid #d9e3ed;background:linear-gradient(160deg,#f8fbff 0%,#f1f6fa 100%);min-width:0}
 .pitch-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px}
 .pitch-head h3{margin:0;font-size:17px}
@@ -207,13 +207,13 @@
 <header class="mast"><div class="brand"><div class="logo">♫</div><div><strong>Practice Lab</strong><small>A focused piano workout, one exercise at a time.</small></div></div><div class="timer"><div><small>SESSION REMAINING</small><div class="time" id="clock">60:00</div></div><button class="btn primary" id="startTimer">▶ Start</button><button class="btn" id="resetTimer" title="Reset timer">↺</button></div></header>
 <nav class="schedule" aria-label="Practice sections">
 <button data-section="0" class="active"><span class="num">01 / TECHNIQUE</span><span class="mins" id="time0">20 min</span><h3>Scales</h3><small>Highlighted keyboard notes</small><div class="bar"><span style="width:100%"></span></div></button>
-<button data-section="1"><span class="num">02 / TIMING</span><span class="mins" id="time1">20 min</span><h3>Rhythm</h3><small>2/4 · Read, count, play</small><div class="bar"><span style="width:100%"></span></div></button>
+<button data-section="1"><span class="num">02 / TIMING</span><span class="mins" id="time1">20 min</span><h3>Rhythm</h3><small id="rhythmNavMeter">2/4 · Read, count, play</small><div class="bar"><span style="width:100%"></span></div></button>
 <button data-section="2"><span class="num">03 / HARMONY</span><span class="mins" id="time2">20 min</span><h3>Chords</h3><small>Voicings and bass movement</small><div class="bar"><span style="width:100%"></span></div></button>
 </nav>
 <div class="main"><aside class="tools-sidebar" aria-label="Live practice tools">
 <section class="pitch-card" id="pitchMonitor" aria-label="Vocal pitch monitor">
  <div class="pitch-head"><h3>Vocal pitch</h3><div class="tool-header-actions"><span class="pitch-live" id="pitchStatus">Mic off</span><button type="button" class="tool-zoom" id="pitchZoom" aria-label="Pin expanded pitch monitor" aria-pressed="false" title="Keep enlarged (useful on touch screens)">⤢</button></div></div>
- <p class="pitch-description">Live voice tuner · C3–C6 · rolling 0.5 s weighted average</p>
+ <p class="pitch-description">Live voice tuner · F2–C6 · rolling 0.5 s weighted average</p>
  <div class="pitch-readout" aria-live="off">
   <div><div class="pitch-note-name" id="pitchNote">—</div><div class="pitch-hz" id="pitchHz">Sing a sustained note</div></div>
   <div class="pitch-cents"><span class="pitch-cents-value" id="pitchCents">—</span><span class="pitch-judgement" id="pitchJudgement">Waiting</span></div>
@@ -222,8 +222,8 @@
   <div class="pitch-cent-track"></div><div class="pitch-cent-zero"></div><div class="pitch-cent-dot" id="pitchCentDot" style="left:50%"></div>
   <div class="pitch-cent-ticks"><span>−50¢</span><span>0</span><span>+50¢</span></div>
  </div>
- <div class="pitch-chart-label"><span>Pitch history</span><span>C3–C6 · semitone grid</span></div>
- <canvas class="pitch-chart" id="pitchChart" role="img" aria-label="Four-second vocal pitch history chart from C3 at bottom to C6 at top, with a live pitch line"></canvas>
+ <div class="pitch-chart-label"><span>Pitch history</span><span>F2–C6 · semitone grid</span></div>
+ <canvas class="pitch-chart" id="pitchChart" role="img" aria-label="Four-second vocal pitch history chart from F2 at bottom to C6 at top, with a live pitch line"></canvas>
  <p class="pitch-enlarge-hint">Each gray strip is one semitone · hover to enlarge or tap ⤢</p>
  <div class="pitch-actions"><button type="button" class="btn" id="pitchToggle" aria-pressed="false">🎙 Enable microphone</button></div>
  <p class="pitch-message" id="pitchMessage" role="status" aria-live="polite">Off until you enable the microphone. Audio stays on this device.</p>
@@ -241,7 +241,7 @@
   <span class="met-beat downbeat"></span><span class="met-beat"></span><span class="met-beat"></span><span class="met-beat"></span>
  </div>
  <div class="met-signature"><span>Beats per bar</span><div class="met-meter-pills" role="group" aria-label="Metronome beats per bar">
-  <button type="button" id="metMeter2" data-meter="2" aria-pressed="false">2/4</button><button type="button" id="metMeter4" data-meter="4" aria-pressed="true" class="on">4/4</button>
+  <button type="button" id="metMeter2" data-meter="2" aria-pressed="false">2/4</button><button type="button" id="metMeter3" data-meter="3" aria-pressed="false">3/4</button><button type="button" id="metMeter4" data-meter="4" aria-pressed="true" class="on">4/4</button>
  </div></div>
  <div class="met-actions"><button type="button" class="btn primary" id="metToggle" aria-pressed="false">▶ Start click</button><button type="button" class="btn" id="metTap">Tap tempo</button></div>
  <div class="met-options">
@@ -267,35 +267,53 @@ const sharpKeys=new Set(['G','D','A','E','B','F#','C#']);
 const sharpNotes=['C','^C','D','^D','E','F','^F','G','^G','A','^A','B'];
 const flatNotes=['C','_D','D','_E','E','F','_G','G','_A','A','_B','B'];
 const modes=['major','minor'];
-const config={scales:{keys:6,octaves:1,bpm:80,modes:['major'],hands:['LH','RH','Both']},rhythm:{bars:24,group:6,bpm:72,eighthDensity:45,rests:false},chords:{bars:16,bpm:76,qualities:['maj','min'],patterns:['4','3+1','2+2'],bass:['root','third','fifth'],inversions:true,showKey:true,showChordNames:true}};
-const sections=[{eyebrow:'PART 01 · TECHNIQUE',title:'Scale laboratory',description:'A shuffled subset of keys. Play left hand, right hand, and hands together.',tag:'KEY STUDY'},{eyebrow:'PART 02 · TIMING',title:'Rhythm laboratory',description:'Two beats per measure in 2/4, with quarter, eighth and half notes. Six bars per page by default.',tag:'RHYTHM STUDY'},{eyebrow:'PART 03 · HARMONY',title:'Chord laboratory',description:'Eight-bar pages with four quarter-note pulses per measure. A A A A, A A A B, or A A B B chord changes.',tag:'HARMONY STUDY'}];
+const config={scales:{keys:6,octaves:1,bpm:80,meter:4,modes:['major'],hands:['LH','RH','Both']},rhythm:{bars:24,group:6,bpm:72,meter:2,eighthDensity:45,rests:false},chords:{bars:16,bpm:76,meter:4,qualities:['maj','min'],patterns:['4','3+1','2+2'],bass:['root','third','fifth'],inversions:true,showKey:true,showChordNames:true}};
+const sections=[{eyebrow:'PART 01 · TECHNIQUE',title:'Scale laboratory',description:'A shuffled subset of keys. Play left hand, right hand, and hands together.',tag:'KEY STUDY'},{eyebrow:'PART 02 · TIMING',title:'Rhythm laboratory',description:'Read and clap accurate 2/4 or 3/4 measures, with quarter, eighth and half notes.',tag:'RHYTHM STUDY'},{eyebrow:'PART 03 · HARMONY',title:'Chord laboratory',description:'Eight-bar piano scores with one chord pulse per quarter-note beat; practice in 4/4 or 3/4.',tag:'HARMONY STUDY'}];
 let exercises=[[],[],[]],indexes=[0,0,0],section=0,remaining=3600,interval=null,timerRunning=false,alloc=[20,20,20];
 function abcnote(midi,flat=false){let s=(flat?flatNotes:sharpNotes)[((midi%12)+12)%12],oct=Math.floor(midi/12)-1,marks=oct>=5?"'".repeat(oct-5):','.repeat(Math.max(0,4-oct));return oct>=5?s.toLowerCase()+marks:s+marks}
 function keySig(k){return k==='C#'?'C#':k}
 function diatonicScale(k,mode,octaves){let root=keyRootMidi[k]+(mode==='minor'?-0:0),steps=mode==='major'?[0,2,4,5,7,9,11,12]:[0,2,3,5,7,8,10,12],asc=[];for(let o=0;o<octaves;o++)for(let j=0;j<7;j++)asc.push(root+12*o+steps[j]);asc.push(root+octaves*12);return [...asc,...asc.slice(0,-1).reverse()]}
 function genScales(){let c=config.scales;let chosen=shuffle(keyNames).slice(0,c.keys);let out=[];for(let key of chosen)for(let mode of c.modes){let notes=diatonicScale(key,mode,c.octaves);for(let hand of c.hands)out.push({key,mode,hand,notes})}return out}
-// In 2/4, four eighth-note units fill each bar, never eight.
-// Weighted, musically readable patterns mimic elementary rhythm-study books.
-const rhythmPatterns=[
- {units:[2,2],base:1.6,growth:-.4},        // two quarters
- {units:[4],base:.6,growth:-.38},           // half note
- {units:[1,1,2],base:.16,growth:1.75},     // two eighths, quarter
- {units:[2,1,1],base:.16,growth:1.75},     // quarter, two eighths
- {units:[1,1,1,1],base:.03,growth:1.05},   // four eighths
- {units:[1,2,1],base:.02,growth:.48}       // eighth, quarter, eighth
-];
+// Rhythms use eighth-note units (2 = quarter, 4 = half); each bar sums
+// to meter * 2. 3/4 uses six subdivisions and stays just as readable as 2/4.
+const rhythmPatterns={
+ 2:[
+  {units:[2,2],base:1.6,growth:-.4},
+  {units:[4],base:.6,growth:-.38},
+  {units:[1,1,2],base:.16,growth:1.75},
+  {units:[2,1,1],base:.16,growth:1.75},
+  {units:[1,1,1,1],base:.03,growth:1.05},
+  {units:[1,2,1],base:.02,growth:.48}
+ ],
+ 3:[
+  {units:[2,2,2],base:1.9,growth:-.55},        // 3 quarter notes
+  {units:[4,2],base:.65,growth:-.4},           // half, quarter
+  {units:[2,4],base:.65,growth:-.4},           // quarter, half
+  {units:[1,1,2,2],base:.2,growth:1.3},       // two 8ths, two quarters
+  {units:[2,1,1,2],base:.2,growth:1.3},
+  {units:[2,2,1,1],base:.2,growth:1.3},
+  {units:[1,1,4],base:.06,growth:.42},
+  {units:[4,1,1],base:.06,growth:.42},
+  {units:[1,1,1,1,2],base:.04,growth:.9},
+  {units:[2,1,1,1,1],base:.04,growth:.9},
+  {units:[1,1,2,1,1],base:.04,growth:.9},
+  {units:[1,1,1,1,1,1],base:.015,growth:.7},
+  {units:[1,2,1,2],base:.04,growth:.32},
+  {units:[2,1,2,1],base:.04,growth:.32},
+  {units:[1,2,2,1],base:.04,growth:.32}
+ ]
+};
 function makeRhythmBar(c){
- const density=c.eighthDensity/100;
- const weights=rhythmPatterns.map(p=>Math.max(0,p.base+p.growth*density)*(p.units.includes(1)?density:1-density));
- let roll=Math.random()*weights.reduce((a,b)=>a+b,0),chosen=rhythmPatterns[0];
- for(let i=0;i<rhythmPatterns.length;i++){roll-=weights[i];if(roll<=0){chosen=rhythmPatterns[i];break}}
+ const density=c.eighthDensity/100,patterns=rhythmPatterns[c.meter];
+ const weights=patterns.map(p=>Math.max(.001,p.base+p.growth*density)*(p.units.includes(1)?Math.max(.06,density):1-density*.82));
+ let roll=Math.random()*weights.reduce((a,b)=>a+b,0),chosen=patterns[0];
+ for(let i=0;i<patterns.length;i++){roll-=weights[i];if(roll<=0){chosen=patterns[i];break}}
  let units=chosen.units.map(dur=>({dur,rest:c.rests&&Math.random()<.14}));
- // Every bar must contain at least one played note.
  if(units.every(u=>u.rest))pick(units).rest=false;
  return units;
 }
 function genRhythm(){let c=config.rhythm;return range(Math.ceil(c.bars/c.group)).map(i=>({
- bars:range(Math.min(c.group,c.bars-i*c.group)).map(()=>({meter:'2/4',units:makeRhythmBar(c)})),part:i+1
+ bars:range(Math.min(c.group,c.bars-i*c.group)).map(()=>({meter:`${c.meter}/4`,units:makeRhythmBar(c)})),part:i+1
 }))}
 const degreeChoices=[
  {interval:0,number:0,roman:'I'}, {interval:2,number:1,roman:'II'}, {interval:4,number:2,roman:'III'},
@@ -342,7 +360,7 @@ function genChords(){
  for(let i=0;i<c.bars;i++){
   // Patterns choose WHEN the harmony changes, not how long a single note lasts.
   // Every beat is its own struck quarter-note chord and bass note.
-  const patt=pick(c.patterns),durations=patt==='4'?[4]:patt==='3+1'?[3,1]:[2,2];
+  const patt=pick(c.patterns),durations=c.meter===3?(patt==='4'?[3]:patt==='3+1'?[2,1]:[1,2]):(patt==='4'?[4]:patt==='3+1'?[3,1]:[2,2]);
   const makeChord=()=>{
    const degree=pick(degreeChoices),type=pick(c.qualities);
    // Center root-position chords near middle C, without imposing an octave
@@ -395,7 +413,7 @@ function genChords(){
   }
   bars.push({events,measure:i+1,pattern:patt});
  }
- return range(Math.ceil(bars.length/8)).map(i=>({bars:bars.slice(i*8,i*8+8),page:i+1,key}));
+ return range(Math.ceil(bars.length/8)).map(i=>({bars:bars.slice(i*8,i*8+8),page:i+1,key,meter:c.meter}));
 }
 function make(){exercises=[genScales(),genRhythm(),genChords()];indexes=[0,0,0];render()}
 function unitABC(u){return (u.rest?'z':'c')+u.dur}
@@ -480,12 +498,12 @@ function drawScaleKeyboard(x){
   </div>`;
  attachScaleKeyboardAudio();
 }
-function rhythmABC(x){let bars=x.bars.map(b=>b.units.map(unitABC).join(' ')+' |').join(' ');return `X:1\nT:\n%%barsperstaff ${config.rhythm.group}\nM:2/4\nL:1/8\nQ:1/4=${config.rhythm.bpm}\nK:C\nV:1 clef=perc\n[V:1] ${bars}]`}
-// Standalone engraved 2/4 percussion notation: no external rendering dependency.
+function rhythmABC(x){let bars=x.bars.map(b=>b.units.map(unitABC).join(' ')+' |').join(' ');return `X:1\nT:\n%%barsperstaff ${config.rhythm.group}\nM:${config.rhythm.meter}/4\nL:1/8\nQ:1/4=${config.rhythm.bpm}\nK:C\nV:1 clef=perc\n[V:1] ${bars}]`}
+// Standalone engraved 2/4 or 3/4 percussion notation: no external rendering dependency.
 function drawRhythmSheet(x){
- const ink='#27332f',soft='#89968e',barWidth=260,firstX=89,top0=73,rowStep=152;
+ const ink='#27332f',soft='#89968e',barWidth=260,firstX=89,top0=73,rowStep=152,meter=config.rhythm.meter;
  const rows=Math.ceil(x.bars.length/3),height=top0+(rows-1)*rowStep+92;
- const parts=[`<svg class="rhythm-sheet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 ${height}" role="img" aria-label="Rhythm exercise: ${x.bars.length} bars in two-four time">`];
+ const parts=[`<svg class="rhythm-sheet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 ${height}" role="img" aria-label="Rhythm exercise: ${x.bars.length} bars in ${meter}/4 time">`];
  const ln=(x1,y1,x2,y2,w=1.2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${ink}" stroke-width="${w}"/>`;
  const path=(d,w=2.4)=>`<path d="${d}" fill="none" stroke="${ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
  function noteHead(px,py,open=false){return `<ellipse cx="${px}" cy="${py}" rx="8.2" ry="5.4" transform="rotate(-23 ${px} ${py})" fill="${open?'#ffffff':ink}" stroke="${ink}" stroke-width="${open?2.4:.7}"/>`}
@@ -499,21 +517,21 @@ function drawRhythmSheet(x){
   const count=Math.min(3,x.bars.length-r*3);
   const staffEnd=firstX+count*barWidth;
   for(let k=0;k<5;k++)parts.push(ln(20,top+k*11,staffEnd,top+k*11,.9));
-  // Percussion clef and repeated 2/4 signature, as in traditional exercise books.
+  // Percussion clef and repeated time signature, as in traditional exercise books.
   parts.push(`<rect x="27" y="${top+10}" width="4" height="22" rx="1" fill="${ink}"/><rect x="34" y="${top+10}" width="4" height="22" rx="1" fill="${ink}"/>`);
-  parts.push(`<text x="56" y="${top+19}" font-family="Georgia,serif" font-size="23" font-weight="700" text-anchor="middle" fill="${ink}">2</text>`);
+  parts.push(`<text x="56" y="${top+19}" font-family="Georgia,serif" font-size="23" font-weight="700" text-anchor="middle" fill="${ink}">${meter}</text>`);
   parts.push(`<text x="56" y="${top+42}" font-family="Georgia,serif" font-size="23" font-weight="700" text-anchor="middle" fill="${ink}">4</text>`);
   for(let col=0;col<count;col++){
    const bar=x.bars[r*3+col],bx=firstX+col*barWidth,headY=top+15;
    parts.push(`<text x="${bx+15}" y="${top-21}" font-size="13" font-family="Georgia,serif" fill="${soft}">${(x.part-1)*config.rhythm.group+r*3+col+1}</text>`);
    let beat=0;const positioned=[];
-   for(const u of bar.units){const px=bx+30+beat*(barWidth-67)/4;positioned.push({...u,px,py:headY});beat+=u.dur}
+   for(const u of bar.units){const px=bx+30+beat*(barWidth-67)/(meter*2);positioned.push({...u,px,py:headY});beat+=u.dur}
    // Beams connect contiguous eighth notes; isolated eighths get a curved flag.
    const beamIndices=new Set();
    for(let j=0;j<positioned.length;){
     if(positioned[j].dur!==1||positioned[j].rest){j++;continue}
     let stop=j+1;
-    while(stop<positioned.length&&positioned[stop].dur===1&&!positioned[stop].rest)stop++;
+    while(stop<positioned.length&&positioned[stop].dur===1&&!positioned[stop].rest && (meter===2 || Math.floor((positioned[stop].px-bx-30+0.001)/((barWidth-67)/meter))===Math.floor((positioned[j].px-bx-30+0.001)/((barWidth-67)/meter))))stop++;
     if(stop-j>=2){
      const beamY=top-24;
      for(let k=j;k<stop;k++){beamIndices.add(k);parts.push(ln(positioned[k].px+7.3,headY,positioned[k].px+7.3,beamY,1.8))}
@@ -564,7 +582,7 @@ function chordABC(x){
   return `${symbol}${degree}[${e.tones.map((m,j)=>abcSpelled(m,e.toneSpells[j])).join('')}]${e.dur*2}`;
  }).join(' ')+' |').join(' ');
  const lh=x.bars.map(bar=>bar.events.map(e=>abcSpelled(e.bass,e.bassSpell)+(e.dur*2)).join(' ')+' |').join(' ');
- return `X:1\nT:\n%%score { ( RH ) ( LH ) }\n%%barsperstaff 2\nM:4/4\nL:1/8\nQ:1/4=${config.chords.bpm}\nK:${x.key}\nV:RH clef=treble-8\nV:LH clef=bass\n[V:RH] ${rh}]\n[V:LH] ${lh}]`;
+ return `X:1\nT:\n%%score { ( RH ) ( LH ) }\n%%barsperstaff 2\nM:${config.chords.meter}/4\nL:1/8\nQ:1/4=${config.chords.bpm}\nK:${x.key}\nV:RH clef=treble-8\nV:LH clef=bass\n[V:RH] ${rh}]\n[V:LH] ${lh}]`;
 }
 // SVG score is self-contained/offline. Each system has a real key signature.
 // Accidentals are tracked within each measure, separately for the two staves.
@@ -572,7 +590,7 @@ function drawChordSVG(x){
  const ink='#27352f',muted='#84928b',accent='#206c59';
  const w=970,rowH=262,rows=Math.ceil(x.bars.length/2),height=rows*rowH+26;
  const sig=getSignature(x.key),rightEdge=946,dividerX=565;
- const parts=[`<svg class="chord-score" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${height}" role="img" aria-label="Eight-bar piano score in ${x.key} major with octave-down treble clef (C4 in the third space, G3 on second line), four quarter-note pulses per bar, printed key signature and staggered second intervals on both staves">`];
+ const parts=[`<svg class="chord-score" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${height}" role="img" aria-label="Eight-bar piano score in ${x.key} major with octave-down treble clef (C4 in the third space, G3 on second line), ${config.chords.meter} quarter-note pulses per bar, printed key signature and staggered second intervals on both staves">`];
  const line=(ax,ay,bx,by,width=1)=>`<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${ink}" stroke-width="${width}"/>`;
  const ellipse=(cx,cy,open)=>`<ellipse cx="${cx}" cy="${cy}" rx="8" ry="5.4" transform="rotate(-18 ${cx} ${cy})" fill="${open?'white':ink}" stroke="${ink}" stroke-width="${open?2:1}"/>`;
  const esc=t=>String(t).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
@@ -626,7 +644,7 @@ function drawChordSVG(x){
   drawKeySignature(bottom,'bass');
   const meterX=99+Math.abs(sig.n)*14;
   for(let staffTop of [top,bottom]){
-   parts.push(`<text x="${meterX}" y="${staffTop+19}" font-family="Georgia,serif" font-size="19" text-anchor="middle">4</text>`);
+   parts.push(`<text x="${meterX}" y="${staffTop+19}" font-family="Georgia,serif" font-size="19" text-anchor="middle">${config.chords.meter}</text>`);
    parts.push(`<text x="${meterX}" y="${staffTop+42}" font-family="Georgia,serif" font-size="19" text-anchor="middle">4</text>`);
   }
   for(let col=0;col<2;col++){
@@ -637,7 +655,7 @@ function drawChordSVG(x){
    const trebleState={},bassState={};
    let beats=0;
    for(const [eventIndex,e] of bar.events.entries()){
-    const nx=barStart+63+beats*62;
+    const nx=barStart+63+beats*(config.chords.meter===3?82:62);
     // Labels identify harmonic changes, not each repeated quarter-note pulse.
     if(e.groupStart){
      if(config.chords.showChordNames){
@@ -967,16 +985,16 @@ function attachChordNoteInspector(){
 }
 function drawChordScore(x){drawChordSVG(x)}
 function drawABC(str){if(!window.ABCJS){$('notation').innerHTML='<div class="fallback">Music renderer could not load. Connect to the internet and reload this page to display notation.</div>';return}try{ABCJS.renderAbc('notation',str,{responsive:'resize',add_classes:true,staffwidth:680,scale:1.2,paddingtop:10,paddingbottom:8,format:{},selectTypes:false});}catch(err){$('notation').innerHTML='<div class="fallback">Could not render this exercise: '+String(err.message)+'</div>';}}
-function render(){stopSustainedNote();stopScaleKeyboardNotes();let s=sections[section],arr=exercises[section],i=indexes[section],x=arr[i];$('sectionEyebrow').textContent=s.eyebrow;$('sectionTitle').textContent=s.title;$('sectionDescription').textContent=s.description;$('sectionTag').textContent=s.tag;$('exerciseCount').textContent=`Exercise ${i+1} of ${arr.length}`;$('prev').disabled=i===0;$('next').disabled=i===arr.length-1;document.querySelectorAll('[data-section]').forEach(b=>b.classList.toggle('active',+b.dataset.section===section));$('nextSection').textContent=section===2?'Back to scales ↻':'Next section →';$('scoreTitle').textContent=section===0?'Fingerings on piano keys':section===1?'Read the 2/4 rhythm':'Play the treble chords with left-hand bass';let bpm=[config.scales.bpm,config.rhythm.bpm,config.chords.bpm][section];$('scoreMeta').textContent='♩ = '+bpm;
-if(section===0){$('exerciseName').textContent=`${x.key} ${x.mode} · ${x.hand==='LH'?'Left hand':x.hand==='RH'?'Right hand':'Together'}`;$('instruction').textContent=`${config.scales.octaves} octave${config.scales.octaves>1?'s':''} · Play legato up and down. ${x.hand==='Both'?'Mirror the line with both hands, in their usual octaves.':'Use your '+(x.hand==='LH'?'left':'right')+' hand.'} Numbers on the keys show which fingers to use. Gold marks the tonic.`;drawScaleKeyboard(x)}
-if(section===1){$('exerciseName').textContent=`Rhythm group ${x.part} · ${x.bars.length} bars`;$('instruction').textContent=`Every bar is exactly 2/4: two quarter-note beats (or four eighth-note subdivisions). Clap or play one note for each written attack, count “1 & 2 &”, and hold sustained notes for their full value. The barlines separate each two-beat measure.`;drawRhythmSheet(x)}
+function render(){stopSustainedNote();stopScaleKeyboardNotes();let s=sections[section],arr=exercises[section],i=indexes[section],x=arr[i];$('sectionEyebrow').textContent=s.eyebrow;$('sectionTitle').textContent=s.title;$('sectionDescription').textContent=s.description;$('sectionTag').textContent=s.tag;$('exerciseCount').textContent=`Exercise ${i+1} of ${arr.length}`;$('prev').disabled=i===0;$('next').disabled=i===arr.length-1;document.querySelectorAll('[data-section]').forEach(b=>b.classList.toggle('active',+b.dataset.section===section));$('nextSection').textContent=section===2?'Back to scales ↻':'Next section →';$('scoreTitle').textContent=section===0?'Fingerings on piano keys':section===1?`Read the ${config.rhythm.meter}/4 rhythm`:'Play the treble chords with left-hand bass';$('rhythmNavMeter').textContent=`${config.rhythm.meter}/4 · Read, count, play`;let bpm=[config.scales.bpm,config.rhythm.bpm,config.chords.bpm][section];$('scoreMeta').textContent=`${config[['scales','rhythm','chords'][section]].meter}/4 · ♩ = ${bpm}`;
+if(section===0){$('exerciseName').textContent=`${x.key} ${x.mode} · ${x.hand==='LH'?'Left hand':x.hand==='RH'?'Right hand':'Together'}`;$('instruction').textContent=`${config.scales.octaves} octave${config.scales.octaves>1?'s':''} · Play legato up and down. ${x.hand==='Both'?'Mirror the line with both hands, in their usual octaves.':'Use your '+(x.hand==='LH'?'left':'right')+' hand.'} Numbers on the keys show which fingers to use. Gold marks the tonic. Use the ${config.scales.meter}/4 metronome to group scale notes into ${config.scales.meter}-beat phrases.`;drawScaleKeyboard(x)}
+if(section===1){$('exerciseName').textContent=`Rhythm group ${x.part} · ${x.bars.length} bars`;$('instruction').textContent=`Every bar is exactly ${config.rhythm.meter}/4: ${config.rhythm.meter} quarter-note beats (${config.rhythm.meter*2} eighth-note subdivisions). Clap or play one note per written attack; count “${config.rhythm.meter===3?'1 & 2 & 3 &':'1 & 2 &'}” and sustain held notes for their full value.`;drawRhythmSheet(x)}
 if(section===2){
  const c=config.chords,first=x.bars[0].measure,last=x.bars[x.bars.length-1].measure;
  $('exerciseName').textContent=`Bars ${first}–${last}`;
  $('exerciseCount').textContent=`Page ${i+1} of ${arr.length} · ${x.bars.length} measures`;
  $('chordKeyBar').classList.toggle('hidden',!c.showKey);
  if(c.showKey)$('chordKeyBar').innerHTML=`<span>TONAL CENTER</span><strong>${x.key} major</strong>`;
- $('instruction').textContent='Play four separate quarter-note pulses per 4/4 bar, with changes following A A A A, A A A B, or A A B B. The key signature applies to both staves; extra accidentals appear only when needed. The treble staff uses octave-down pitch positions: C4 is in the third space and G3 is on the second line. Roman numerals show harmony changes, treble = chords, bass = bass notes. Hide the key name or chord names to quiz yourself. Hover over a notehead to see its pitch. Click to play and sustain that note with an arrow label; click again or Stop note to silence it.';
+ $('instruction').textContent=`Play ${c.meter} separate quarter-note pulses per ${c.meter}/4 bar, with changes following ${c.meter===3?'A A A, A A B, or A B B':'A A A A, A A A B, or A A B B'}. The key signature applies to both staves; extra accidentals appear only when needed. The treble staff uses octave-down pitch positions: C4 is in the third space and G3 is on the second line. Roman numerals show harmony changes, treble = chords, bass = bass notes. Hide the key name or chord names to quiz yourself. Hover over a notehead to see its pitch. Click to sustain a note with an arrow label; click again or Stop note to silence it.`;
  $('scoreTitle').textContent='Eight-bar quarter-note chord study';
  drawChordScore(x);
 }else{$('chordKeyBar').classList.add('hidden')}
@@ -984,19 +1002,25 @@ renderSettings();syncMetronomeToExercise()}
 function switchSection(n){section=(n+3)%3;render()}
 function move(n){let next=indexes[section]+n;if(next<0){if(section>0)switchSection(section-1);return}if(next>=exercises[section].length){if(section<2)switchSection(section+1);return}indexes[section]=next;render()}
 function slider(label,key,min,max,step,suffix=''){let value=config[['scales','rhythm','chords'][section]][key];return `<div class="setting"><div class="setting-line"><label for="setting-${key}">${label}</label><output>${value}${suffix}</output></div><input data-range="${key}" id="setting-${key}" type="range" min="${min}" max="${max}" step="${step}" value="${value}"></div>`}
+function meterSetting(){
+ const current=config[['scales','rhythm','chords'][section]].meter;
+ const options=section===1?[2,3]:[3,4];
+ return `<div class="setting"><div class="setting-line"><label>Time signature</label></div><div class="chips" role="group" aria-label="Exercise time signature">${options.map(n=>`<button type="button" class="chip ${current===n?'on':''}" data-meter-choice="${n}" aria-pressed="${current===n}">${n}/4</button>`).join('')}</div></div>`;
+}
 function chips(label,key,options){let vals=config[['scales','rhythm','chords'][section]][key];if(!Array.isArray(vals))vals=vals?[true]:[];return `<div class="setting"><div class="setting-line"><label>${label}</label></div><div class="chips">${options.map(([v,t])=>`<button class="chip ${vals.includes(v)?'on':''}" data-group="${key}" data-value="${v}" aria-pressed="${vals.includes(v)}">${t}</button>`).join('')}</div></div>`}
-function renderSettings(){let html='';if(section===0){html+=slider('Random keys','keys',1,12,1,' / 12')+slider('Octaves','octaves',1,2,1)+slider('Tempo','bpm',40,160,5,' bpm')+chips('Scale types','modes',[['major','Major'],['minor','Natural minor']])+chips('Hand sequence','hands',[['LH','Left'],['RH','Right'],['Both','Together']])}else if(section===1){html+=slider('Total bars','bars',6,48,6)+slider('Bars per page','group',6,12,6)+slider('Tempo','bpm',40,160,5,' bpm')+slider('Eighth-note frequency','eighthDensity',0,100,5,'%')+`<p class="setting-hint" style="margin:-11px 0 17px">Always 2/4 · each bar lasts exactly two beats.</p>`+chips('Add rests','rests',[[true,'Include rests']])}else{html+=`<div class="setting"><div class="setting-line"><label>Study mode</label></div>
+function renderSettings(){let html='';if(section===0){html+=meterSetting()+slider('Random keys','keys',1,12,1,' / 12')+slider('Octaves','octaves',1,2,1)+slider('Tempo','bpm',40,160,5,' bpm')+chips('Scale types','modes',[['major','Major'],['minor','Natural minor']])+chips('Hand sequence','hands',[['LH','Left'],['RH','Right'],['Both','Together']])}else if(section===1){html+=meterSetting()+slider('Total bars','bars',6,48,6)+slider('Bars per page','group',6,12,6)+slider('Tempo','bpm',40,160,5,' bpm')+slider('Eighth-note frequency','eighthDensity',0,100,5,'%')+`<p class="setting-hint" style="margin:-11px 0 17px">Every bar fills exactly ${config.rhythm.meter} quarter-note beats.</p>`+chips('Add rests','rests',[[true,'Include rests']])}else{html+=meterSetting()+`<div class="setting"><div class="setting-line"><label>Study mode</label></div>
  <div class="toggle-row"><label for="toggle-key">Show key</label><button id="toggle-key" class="toggle-switch ${config.chords.showKey?'on':''}" data-display="showKey" role="switch" aria-checked="${config.chords.showKey}" aria-label="Show key"></button></div>
  <div class="toggle-row"><label for="toggle-chord-names">Show chord names</label><button id="toggle-chord-names" class="toggle-switch ${config.chords.showChordNames?'on':''}" data-display="showChordNames" role="switch" aria-checked="${config.chords.showChordNames}" aria-label="Show chord names"></button></div>
  <p class="setting-hint">Roman numerals always stay visible. Hiding answers never changes the progression.</p></div>`+
  slider('Number of bars','bars',8,64,8)+slider('Tempo','bpm',40,160,5,' bpm')+
  chips('Chord qualities','qualities',[['maj','Major'],['min','Minor'],['min7','Minor 7'],['7','Dominant 7'],['maj7','Major 7']])+
- chips('Quarter-note chord pattern','patterns',[['4','A A A A'],['3+1','A A A B'],['2+2','A A B B']])+
- '<p class="setting-hint" style="margin:-10px 0 18px">Four quarter-note strikes per bar, even when the same chord repeats.</p>'+
+ chips('Quarter-note chord pattern','patterns',config.chords.meter===3? [['4','A A A'],['3+1','A A B'],['2+2','A B B']] : [['4','A A A A'],['3+1','A A A B'],['2+2','A A B B']])+
+ `<p class="setting-hint" style="margin:-10px 0 18px">${config.chords.meter} quarter-note strikes per bar, even when the same chord repeats.</p>`+
  chips('Bass notes','bass',[['root','Root'],['third','3rd'],['fifth','5th'],['seventh','7th'],['ninth','2nd / 9th']])+
  chips('Voicing','inversions',[[true,'Allow inversions']])}html+='<p class="setting-hint">Changing musical parameters generates new exercises. The show/hide switches keep your current chords.</p>';$('dynamicSettings').innerHTML=html;
+document.querySelectorAll('[data-meter-choice]').forEach(el=>el.addEventListener('click',()=>{config[['scales','rhythm','chords'][section]].meter=Number(el.dataset.meterChoice);regenerateSection()}));
 document.querySelectorAll('[data-display]').forEach(el=>el.addEventListener('click',()=>{let k=el.dataset.display;config.chords[k]=!config.chords[k];render()}));
-document.querySelectorAll('[data-range]').forEach(el=>el.addEventListener('input',()=>{config[['scales','rhythm','chords'][section]][el.dataset.range]=Number(el.value);if(el.dataset.range==='bpm'){el.closest('.setting').querySelector('output').textContent=el.value+' bpm';$('scoreMeta').textContent='♩ = '+el.value;syncMetronomeToExercise()}else regenerateSection()}));document.querySelectorAll('[data-group]').forEach(el=>el.addEventListener('click',()=>{let c=config[['scales','rhythm','chords'][section]],key=el.dataset.group;let val=el.dataset.value;if(key==='rests'||key==='inversions'){c[key]=!c[key]}else{let a=c[key];c[key]=a.includes(val)?a.length>1?a.filter(v=>v!==val):a:[...a,val]}regenerateSection()}))}
+document.querySelectorAll('[data-range]').forEach(el=>el.addEventListener('input',()=>{config[['scales','rhythm','chords'][section]][el.dataset.range]=Number(el.value);if(el.dataset.range==='bpm'){el.closest('.setting').querySelector('output').textContent=el.value+' bpm';$('scoreMeta').textContent=`${config[['scales','rhythm','chords'][section]].meter}/4 · ♩ = ${el.value}`;syncMetronomeToExercise()}else regenerateSection()}));document.querySelectorAll('[data-group]').forEach(el=>el.addEventListener('click',()=>{let c=config[['scales','rhythm','chords'][section]],key=el.dataset.group;let val=el.dataset.value;if(key==='rests'||key==='inversions'){c[key]=!c[key]}else{let a=c[key];c[key]=a.includes(val)?a.length>1?a.filter(v=>v!==val):a:[...a,val]}regenerateSection()}))}
 function regenerateSection(){exercises[section]=[genScales,genRhythm,genChords][section]();indexes[section]=0;render()}
 function setAlloc(which,v){let other=which===0?1:0;let max=55-alloc[other];alloc[which]=Math.min(v,max);alloc[2]=60-alloc[0]-alloc[1];$('split').value=alloc[0];$('rhythmTime').value=alloc[1];$('splitText').textContent=alloc[0]+' min';$('rhythmTimeText').textContent=alloc[1]+' min';$('chordTimeText').textContent=`Chords: ${alloc[2]} min · Total: 60 min`;alloc.forEach((a,i)=>$('time'+i).textContent=a+' min')}
 function updateClock(){$('clock').textContent=`${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;if(remaining===0&&timerRunning){clearInterval(interval);timerRunning=false;$('startTimer').textContent='▶ Start';alert('Session complete — great work!')}}
@@ -1016,7 +1040,7 @@ function vocalPitchName(midi){const n=Math.round(midi);return vocalNotes[((n%12)
 // comparison window so the low notes do not receive an unfair advantage.
 function detectVocalPitch(buffer,sampleRate){
  const minTau=Math.max(2,Math.floor(sampleRate/1100));
- const maxTau=Math.min(Math.ceil(sampleRate/123),Math.floor(buffer.length/3));
+ const maxTau=Math.min(Math.ceil(sampleRate/80),Math.floor(buffer.length/3));
  const count=Math.min(2400,buffer.length-maxTau);
  if(count<maxTau*2)return null;
  let power=0,mean=0;
@@ -1050,7 +1074,7 @@ function detectVocalPitch(buffer,sampleRate){
  const denom=left-2*center+right;
  const refined=bestTau+(Math.abs(denom)>1e-8?pitchClamp(.5*(left-right)/denom,-1,1):0);
  const freq=sampleRate/refined;
- if(!Number.isFinite(freq)||freq<128||freq>1065)return null;
+ if(!Number.isFinite(freq)||freq<80||freq>1065)return null;
  return {midi:pitchToMidi(freq),confidence:pitchClamp((1-bestVal),.01,1),rms};
 }
 // Last 500 ms, with stronger weights for newer and more reliable samples.
@@ -1075,19 +1099,20 @@ function drawVocalChart(now=performance.now()){
  const ctx=canvas.getContext('2d');if(!ctx)return;
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
  const l=33,r=width-10,top=10,bottom=height-12;
- const yOf=m=>bottom-(pitchClamp(m,48,84)-48)/36*(bottom-top);
+ const pitchMin=41,pitchMax=84; // F2 (MIDI 41) through C6 (MIDI 84)
+ const yOf=m=>bottom-(pitchClamp(m,pitchMin,pitchMax)-pitchMin)/(pitchMax-pitchMin)*(bottom-top);
  // Alternating gray semitone strips and a visible thin rail for every chromatic step.
  // One band = one semitone. Octaves get darker lines and labels on the left.
- for(let m=48;m<84;m++){
-  if((m-48)%2===0){
+ for(let m=pitchMin;m<pitchMax;m++){
+  if((m-pitchMin)%2===0){
    ctx.fillStyle='#f0f2f4';ctx.fillRect(l,yOf(m+1),r-l,yOf(m)-yOf(m+1));
   }
  }
- for(let m=48;m<=84;m++){
-  const y=yOf(m),octave=m%12===0;
+ for(let m=pitchMin;m<=pitchMax;m++){
+  const y=yOf(m),octave=m%12===0,lowBoundary=m===pitchMin;
   ctx.beginPath();ctx.moveTo(l,y);ctx.lineTo(r,y);
-  ctx.strokeStyle=octave?'#98a6b0':'#c8cdd2';ctx.lineWidth=octave?1.25:.75;ctx.stroke();
-  if(octave){ctx.font='bold 10px system-ui,sans-serif';ctx.textAlign='left';ctx.fillStyle='#5b7584';ctx.fillText(`C${m/12-1}`,5,y+3)}
+  ctx.strokeStyle=(octave||lowBoundary)?'#98a6b0':'#c8cdd2';ctx.lineWidth=(octave||lowBoundary)?1.25:.75;ctx.stroke();
+  if(octave||lowBoundary){ctx.font='bold 10px system-ui,sans-serif';ctx.textAlign='left';ctx.fillStyle='#5b7584';ctx.fillText(lowBoundary?'F2':`C${m/12-1}`,5,y+3)}
  }
  const timeWindow=4000;
  const chartPoints=vocal.trace.filter(p=>now-p.t<=timeWindow+100&&p.t<=now);
@@ -1129,7 +1154,7 @@ function vocalFrame(now){
  const sample=detectVocalPitch(vocal.buffer,vocal.context.sampleRate);
  vocal.history=vocal.history.filter(s=>now-s.t<=500);
  vocal.trace=vocal.trace.filter(s=>now-s.t<=4200);
- if(sample&&sample.midi>=47.52&&sample.midi<=84.48){
+ if(sample&&sample.midi>=40.52&&sample.midi<=84.48){
   vocal.history.push({midi:sample.midi,confidence:sample.confidence,t:now});
   const smoothed=averagedVocalMidi(vocal.history,now);
   vocal.trace.push({midi:smoothed,t:now});
@@ -1232,8 +1257,8 @@ function showMetronome(){
  $('metBpmSlider').value=met.bpm;
  $('metBeatRow').setAttribute('aria-label',`Beat indicators: ${met.beats} beats per bar`);
  $('metBeatRow').innerHTML=Array.from({length:met.beats},(_,i)=>`<span class="met-beat ${i===0?'downbeat':''}" aria-hidden="true"></span>`).join('');
- $('metMeter2').classList.toggle('on',met.beats===2);$('metMeter4').classList.toggle('on',met.beats===4);
- $('metMeter2').setAttribute('aria-pressed',String(met.beats===2));$('metMeter4').setAttribute('aria-pressed',String(met.beats===4));
+ $('metMeter2').classList.toggle('on',met.beats===2);$('metMeter3').classList.toggle('on',met.beats===3);$('metMeter4').classList.toggle('on',met.beats===4);
+ $('metMeter2').setAttribute('aria-pressed',String(met.beats===2));$('metMeter3').setAttribute('aria-pressed',String(met.beats===3));$('metMeter4').setAttribute('aria-pressed',String(met.beats===4));
  $('metFollow').checked=met.follow;$('metAccent').checked=met.accent;
  $('metronomePanel').classList.toggle('is-playing',met.playing);
  $('metToggle').textContent=met.playing?'■ Stop click':'▶ Start click';
@@ -1297,7 +1322,7 @@ async function startMetronome(){
 }
 function changeMetronome({bpm=met.bpm,beats=met.beats,follow=met.follow}={}){
  const cleanBpm=Math.min(220,Math.max(40,Math.round(bpm)));
- const cleanBeats=beats===2?2:4;
+ const cleanBeats=[2,3,4].includes(beats)?beats:4;
  const changed=cleanBpm!==met.bpm||cleanBeats!==met.beats;
  // Reset on tempo/meter edits so the next beat starts cleanly at beat one.
  const restart=changed&&met.playing;
@@ -1309,13 +1334,14 @@ function changeMetronome({bpm=met.bpm,beats=met.beats,follow=met.follow}={}){
 function syncMetronomeToExercise(){
  if(!met.follow)return;
  const c=config[['scales','rhythm','chords'][section]];
- changeMetronome({bpm:c.bpm,beats:section===1?2:4,follow:true});
+ changeMetronome({bpm:c.bpm,beats:c.meter,follow:true});
 }
 $('metToggle').addEventListener('click',()=>met.playing?stopMetronome():startMetronome());
 $('metMinus').addEventListener('click',()=>changeMetronome({bpm:met.bpm-1,follow:false}));
 $('metPlus').addEventListener('click',()=>changeMetronome({bpm:met.bpm+1,follow:false}));
 $('metBpmSlider').addEventListener('input',e=>changeMetronome({bpm:+e.target.value,follow:false}));
 $('metMeter2').addEventListener('click',()=>changeMetronome({beats:2,follow:false}));
+$('metMeter3').addEventListener('click',()=>changeMetronome({beats:3,follow:false}));
 $('metMeter4').addEventListener('click',()=>changeMetronome({beats:4,follow:false}));
 $('metFollow').addEventListener('change',e=>{met.follow=e.target.checked;if(met.follow)syncMetronomeToExercise();else showMetronome()});
 $('metAccent').addEventListener('change',e=>{met.accent=e.target.checked;showMetronome()});
