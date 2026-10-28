@@ -318,10 +318,17 @@ function chordToneSpelling(rootSpell,degreeOffset,pc){
  const letter=pitchLetters[(pitchLetters.indexOf(rootSpell[0])+degreeOffset)%7];
  return spellOnLetter(letter,pc);
 }
+// Written octaves must respect enharmonic notes crossing C (B#3 = C4,
+// Cb4 = B3). This also keeps the note inspector and ledger lines correct.
+function writtenOctave(midi,spelling){
+ const letter=spelling[0],mods=spelling.slice(1);
+ const semitones=(mods.match(/#/g)||[]).length-(mods.match(/b/g)||[]).length;
+ return Math.round((midi-naturalPC[pitchLetters.indexOf(letter)]-semitones)/12)-1;
+}
 function abcSpelled(midi,spelling){
  const accidental=spelling.slice(1),letter=spelling[0];
  const pref=accidental.startsWith('#')?'^'.repeat(accidental.length):accidental.startsWith('b')?'_'.repeat(accidental.length):'';
- const oct=Math.floor(midi/12)-1;
+ const oct=writtenOctave(midi,spelling);
  return pref+(oct>=5?letter.toLowerCase()+"'".repeat(oct-5):letter+','.repeat(Math.max(0,4-oct)));
 }
 function chordRoman(degree,type){
@@ -338,7 +345,13 @@ function genChords(){
   const patt=pick(c.patterns),durations=patt==='4'?[4]:patt==='3+1'?[3,1]:[2,2];
   const makeChord=()=>{
    const degree=pick(degreeChoices),type=pick(c.qualities);
-   let r=root+degree.interval;while(r>71)r-=12;
+   // Center root-position chords near middle C, without imposing an octave
+   // limit on the chord's individual notes. In particular C is C4 (60)
+   // and G is G3 (55); their thirds, fifths and inversions may cross octaves.
+   // A chromatic note is placed at its nearest pitch to C4 (F# resolves down).
+   const pc=(root+degree.interval)%12;
+   const trebleRootAnchors=[60,61,62,63,64,65,54,55,56,57,58,59];
+   const r=trebleRootAnchors[pc];
    const intervals=type==='min'?[0,3,7]:type==='min7'?[0,3,7,10]:type==='7'?[0,4,7,10]:type==='maj7'?[0,4,7,11]:[0,4,7];
    const rootName=degreeSpelling(key,degree);
    let notes=intervals.map((offset,j)=>({
@@ -347,8 +360,10 @@ function genChords(){
    const inv=c.inversions?Math.floor(Math.random()*intervals.length):0;
    for(let k=0;k<inv;k++)notes[k].midi+=12;
    notes.sort((a,b)=>a.midi-b.midi);
-   while(notes[0].midi<60)notes.forEach(n=>n.midi+=12);
-   while(notes[notes.length-1].midi>87)notes.forEach(n=>n.midi-=12);
+   // Permit both G3 and notes above C5 as natural voicing outcomes.
+   // Only shift exceptional high inversions down to avoid colliding with
+   // chord-symbol annotations above the treble staff.
+   while(notes[notes.length-1].midi>79)notes.forEach(n=>n.midi-=12);
    const bassType=pick(c.bass);
    const offset={root:0,third:intervals[1],fifth:7,seventh:intervals[3]??10,ninth:2}[bassType];
    let bass=r-24+offset;
@@ -562,14 +577,14 @@ function drawChordSVG(x){
  const ellipse=(cx,cy,open)=>`<ellipse cx="${cx}" cy="${cy}" rx="8" ry="5.4" transform="rotate(-18 ${cx} ${cy})" fill="${open?'white':ink}" stroke="${ink}" stroke-width="${open?2:1}"/>`;
  const esc=t=>String(t).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
  const staffY=(m,top,clef,spelling)=>{
-  const oct=Math.floor(m/12)-1,letter=pitchLetters.indexOf(spelling[0]),index=oct*7+letter;
+  const oct=writtenOctave(m,spelling),letter=pitchLetters.indexOf(spelling[0]),index=oct*7+letter;
   const bottom=clef==='treble'?4*7+2:2*7+4; // bottom E4 / G2
   return top+40-(index-bottom)*5;
  };
  const glyphFor=desired=>desired===''?'♮':desired==='##'?'𝄪':desired==='bb'?'𝄫':desired==='#'?'♯':desired==='b'?'♭':desired;
  // Key signature is in force throughout a measure, unless overridden by a written accidental.
  const nextAccidental=(spelling,midi,state)=>{
-  const letter=spelling[0],oct=Math.floor(midi/12)-1,desired=spelling.slice(1),id=letter+oct;
+  const letter=spelling[0],oct=writtenOctave(midi,spelling),desired=spelling.slice(1),id=letter+oct;
   const inForce=Object.hasOwn(state,id)?state[id]:(sig.map[letter]||'');
   state[id]=desired;
   return desired===inForce?null:glyphFor(desired);
@@ -580,7 +595,7 @@ function drawChordSVG(x){
   if(y>=top+50)for(let t=top+50;t<=y;t+=10)out+=line(xp-14,t,xp+15,t,1.2);
   if(mark!==null)out+=`<text x="${accidentalAnchorX-29-markX}" y="${y+8}" text-anchor="middle" font-family="DejaVu Sans,Noto Music,serif" font-size="22" fill="${ink}">${esc(mark)}</text>`;
   // Each rendered notehead has an independent pitch identity and hit target.
-  const octave=Math.floor(m/12)-1;
+  const octave=writtenOctave(m,spelling);
   const pitch=spelling.replaceAll('##','𝄪').replaceAll('bb','𝄫').replaceAll('#','♯').replaceAll('b','♭')+octave;
   const staff=clef==='treble'?'Treble':'Bass';
   return out+`<g class="chord-note" role="button" tabindex="0" aria-label="${esc(pitch)}, ${staff} clef, bar ${barNumber}. Click to sustain this note, click again to stop" data-note-id="${esc(noteId)}" data-midi="${m}" data-pitch="${esc(pitch)}" data-clef="${staff}" data-bar="${barNumber}" data-x="${xp}" data-y="${y}" data-staff-top="${top}"><ellipse class="note-hit" cx="${xp}" cy="${y}" rx="11" ry="9" fill="transparent" stroke="none"/><ellipse class="notehead" cx="${xp}" cy="${y}" rx="8" ry="5.4" transform="rotate(-18 ${xp} ${y})" fill="${open?'white':ink}" stroke="${ink}" stroke-width="${open?2:1}" pointer-events="none"/></g>`;
