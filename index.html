@@ -545,7 +545,7 @@ const keySignatures={
 const sharpOrder=['F','C','G','D','A','E','B'];
 const flatOrder=['B','E','A','D','G','C','F'];
 const keySignatureStaffNotes={
- treble:{sharp:['F5','C5','G5','D5','A4','E5','B4'],flat:['B4','E5','A4','D5','G4','C5','F4']},
+ treble:{sharp:['F4','C4','G4','D4','A3','E4','B3'],flat:['B3','E4','A3','D4','G3','C4','F3']},
  bass:{sharp:['F3','C3','G3','D3','A2','E3','B2'],flat:['B2','E3','A2','D3','G2','C3','F2']}
 };
 function getSignature(key){
@@ -564,7 +564,7 @@ function chordABC(x){
   return `${symbol}${degree}[${e.tones.map((m,j)=>abcSpelled(m,e.toneSpells[j])).join('')}]${e.dur*2}`;
  }).join(' ')+' |').join(' ');
  const lh=x.bars.map(bar=>bar.events.map(e=>abcSpelled(e.bass,e.bassSpell)+(e.dur*2)).join(' ')+' |').join(' ');
- return `X:1\nT:\n%%score { ( RH ) ( LH ) }\n%%barsperstaff 2\nM:4/4\nL:1/8\nQ:1/4=${config.chords.bpm}\nK:${x.key}\nV:RH clef=treble\nV:LH clef=bass\n[V:RH] ${rh}]\n[V:LH] ${lh}]`;
+ return `X:1\nT:\n%%score { ( RH ) ( LH ) }\n%%barsperstaff 2\nM:4/4\nL:1/8\nQ:1/4=${config.chords.bpm}\nK:${x.key}\nV:RH clef=treble-8\nV:LH clef=bass\n[V:RH] ${rh}]\n[V:LH] ${lh}]`;
 }
 // SVG score is self-contained/offline. Each system has a real key signature.
 // Accidentals are tracked within each measure, separately for the two staves.
@@ -572,13 +572,13 @@ function drawChordSVG(x){
  const ink='#27352f',muted='#84928b',accent='#206c59';
  const w=970,rowH=262,rows=Math.ceil(x.bars.length/2),height=rows*rowH+26;
  const sig=getSignature(x.key),rightEdge=946,dividerX=565;
- const parts=[`<svg class="chord-score" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${height}" role="img" aria-label="Eight-bar piano score in ${x.key} major with four quarter-note pulses per bar, printed key signature and staggered second intervals on both staves">`];
+ const parts=[`<svg class="chord-score" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${height}" role="img" aria-label="Eight-bar piano score in ${x.key} major with octave-down treble clef (C4 in the third space, G3 on second line), four quarter-note pulses per bar, printed key signature and staggered second intervals on both staves">`];
  const line=(ax,ay,bx,by,width=1)=>`<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${ink}" stroke-width="${width}"/>`;
  const ellipse=(cx,cy,open)=>`<ellipse cx="${cx}" cy="${cy}" rx="8" ry="5.4" transform="rotate(-18 ${cx} ${cy})" fill="${open?'white':ink}" stroke="${ink}" stroke-width="${open?2:1}"/>`;
  const esc=t=>String(t).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
  const staffY=(m,top,clef,spelling)=>{
   const oct=writtenOctave(m,spelling),letter=pitchLetters.indexOf(spelling[0]),index=oct*7+letter;
-  const bottom=clef==='treble'?4*7+2:2*7+4; // bottom E4 / G2
+  const bottom=clef==='treble'?3*7+2:2*7+4; // octave-down treble: bottom E3, G3 2nd line, C4 3rd space; bass bottom G2
   return top+40-(index-bottom)*5;
  };
  const glyphFor=desired=>desired===''?'♮':desired==='##'?'𝄪':desired==='bb'?'𝄫':desired==='#'?'♯':desired==='b'?'♭':desired;
@@ -619,6 +619,8 @@ function drawChordSVG(x){
    parts.push(line(25,bottom+10*k,rightEdge,bottom+10*k,.9));
   }
   parts.push(`<text x="29" y="${top+38}" font-size="54" font-family="Noto Music,DejaVu Sans,serif" fill="${ink}">𝄞</text>`);
+  // Small 8 under the treble clef explicitly indicates pitches sound an octave lower.
+  parts.push(`<text x="43" y="${top+55}" font-size="13" font-family="Georgia,serif" font-weight="bold" fill="${ink}">8</text>`);
   parts.push(`<text x="32" y="${bottom+34}" font-size="44" font-family="Noto Music,DejaVu Sans,serif" fill="${ink}">𝄢</text>`);
   drawKeySignature(top,'treble');
   drawKeySignature(bottom,'bass');
@@ -974,7 +976,7 @@ if(section===2){
  $('exerciseCount').textContent=`Page ${i+1} of ${arr.length} · ${x.bars.length} measures`;
  $('chordKeyBar').classList.toggle('hidden',!c.showKey);
  if(c.showKey)$('chordKeyBar').innerHTML=`<span>TONAL CENTER</span><strong>${x.key} major</strong>`;
- $('instruction').textContent='Play four separate quarter-note pulses per 4/4 bar, with changes following A A A A, A A A B, or A A B B. The key signature applies to both staves; extra accidentals appear only when needed. Roman numerals show harmony changes, treble = chords, bass = bass notes. Hide the key name or chord names to quiz yourself. Hover over a notehead to see its pitch. Click to play and sustain that note with an arrow label; click again or Stop note to silence it.';
+ $('instruction').textContent='Play four separate quarter-note pulses per 4/4 bar, with changes following A A A A, A A A B, or A A B B. The key signature applies to both staves; extra accidentals appear only when needed. The treble staff uses octave-down pitch positions: C4 is in the third space and G3 is on the second line. Roman numerals show harmony changes, treble = chords, bass = bass notes. Hide the key name or chord names to quiz yourself. Hover over a notehead to see its pitch. Click to play and sustain that note with an arrow label; click again or Stop note to silence it.';
  $('scoreTitle').textContent='Eight-bar quarter-note chord study';
  drawChordScore(x);
 }else{$('chordKeyBar').classList.add('hidden')}
